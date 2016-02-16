@@ -33,14 +33,17 @@ function cancelClicked() {
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
  *
+ *
+ *
+ *
  * @return undefined
  */
 function addStudent()//called by addClicked
 {
     var new_student = {name: $('#studentName').val(), course: $('#course').val(), grade: $('#studentGrade').val()};
     student_array.push(new_student);
-    addStudentToDom(new_student);
-    clearAddStudentForm();
+
+
     return;
 }
 
@@ -83,6 +86,7 @@ function updateData()
  */
 function updateStudentList() {//add many students to the DOM, this is a loop, should also call addStudentToDOM
 
+
 }
 
 /**
@@ -100,25 +104,12 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     $('tbody tr:last-of-type').append('<td><button type="button" class="btn btn-danger">Delete</button></td>');
 }
 
-//function addStudentToDom (student_object){
-//
-//    for (var i= 0; i<student_array.length; i++){
-//        for(var j=0; j)
-//
-//
-//    $('tbody').append('<tr> ');
-//
-//
-//
-//}
-
 
 /**
  * reset - resets the application to initial state. Global variables reset, DOM get reset to initial load state
  */
 function reset() {
     student_array = [];
-    inputIds = [];
     updateData();
     cancelClicked();
 }

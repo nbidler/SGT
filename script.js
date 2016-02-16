@@ -5,7 +5,7 @@
  * student_array - global array to hold student objects
  * @type {Array}
  */
-var student_array =[{name: 'first', course: 'frist', grade: '0'},
+var student_array = [{name: 'first', course: 'frist', grade: '0'},
     {name: 'second', course: 'secnod', grade: '50'},
     {name: 'third', course: 'thrid', grade: '100'}];
 
@@ -42,8 +42,10 @@ function cancelClicked() {
  */
 function addStudent()//called by addClicked
 {
-    var new_student = {name: $('#' + inputIds[0]).val(),
-            course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val()};
+    var new_student = {
+        name: $('#' + inputIds[0]).val(),
+        course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val()
+    };
     student_array.push(new_student);
 
     return;
@@ -52,8 +54,7 @@ function addStudent()//called by addClicked
 /**
  * clearAddStudentForm - clears out the form values based on inputIds variable
  */
-function clearAddStudentForm()
-{
+function clearAddStudentForm() {
     $('#studentName').val('');
     $('#course').val('');
     $('#studentGrade').val('');
@@ -64,15 +65,13 @@ function clearAddStudentForm()
  * @returns {number}
  */
 function calculateAverage() {
-    if (student_array.length < 1)
-    {
+    if (student_array.length < 1) {
         return 0;
     }
-    else
-    {
+    else {
         var scores = 0;
         for (var i = 0; i < student_array.length; i++) {
-            scores+= Number(student_array[i].grade);
+            scores += Number(student_array[i].grade);
         }
         return (scores / student_array.length);
     }
@@ -81,8 +80,7 @@ function calculateAverage() {
 /**
  * updateData - centralized function to update the average and call student list update
  */
-function updateData()
-{
+function updateData() {
     var newAvg = +(calculateAverage()).toFixed(2);
     $('.avgGrade').text(newAvg);
     updateStudentList();
@@ -94,31 +92,31 @@ function updateData()
 //add many students to the DOM, this is a loop, should also call addStudentToDOM
 /*Loop through student array, loop through display rows*/
 function updateStudentList() {
-var currentName;
-var currentCourse;
-for (var student in student_array){
-    currentName =  student.name;
-    currentCourse = student.course;
-    var matchNotFound = true;
-    var currentRows = $('tr').length;//Gives us how many rows are currently displayed
-    for (var i = 1; i<currentRows; i++){
-        var row = $('tr:nth-of-type('+ (i+1) +')');// targeting current row, creating a string withinn nth of type
-        //parentheses
-        //Row td first-of-type is the same as currentName and Row td nth-of-type(2) is the same as currentCourse
-        //then the entry is already there, and set match not found to false.  Break.
-        if (
-        (row.find('td:first-of-type').val()==currentName) &&//finds the first td inside the row
-        (row.find('td:nth-of-type(2)').val()==currentCourse))//finds the second td inside the row
-        {
-            matchNotFound = false;
-            break;
+    var currentName;
+    var currentCourse;
+    for (var student in student_array) {
+        currentName = student_array[student].name;
+        currentCourse = student_array[student].course;
+        var matchNotFound = true;
+        var currentRows = $('tr').length;//Gives us how many rows are currently displayed
+        for (var i = 0; i < currentRows; i++) {
+            var row = $('tr:nth-of-type(' + (i + 1) + ')');// targeting current row, creating a string withinn nth of type
+            //parentheses
+            //Row td first-of-type is the same as currentName and Row td nth-of-type(2) is the same as currentCourse
+            //then the entry is already there, and set match not found to false.  Break.
+            if (
+                (row.find('td:first-of-type').text() == currentName) &&//finds the first td inside the row
+                (row.find('td:nth-of-type(2)').text() == currentCourse))//finds the second td inside the row
+            {
+                matchNotFound = false;
+                break;
+            }
+        }
+
+        if (matchNotFound) {//match not found is equal to true
+            addStudentToDom(student_array[student]);//adds the new student array object
         }
     }
-
-if (matchNotFound) {
-    addStudentToDom(student);
-}
-}
 
 
 }
@@ -132,9 +130,9 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
 // is passed into this function
 {
     $('tbody').append('<tr>');
-    $('tbody tr:last-of-type').append('<td>'+studentObj.name);
-    $('tbody tr:last-of-type').append('<td>'+studentObj.course);
-    $('tbody tr:last-of-type').append('<td>'+studentObj.grade);
+    $('tbody tr:last-of-type').append('<td>' + studentObj.name);
+    $('tbody tr:last-of-type').append('<td>' + studentObj.course);
+    $('tbody tr:last-of-type').append('<td>' + studentObj.grade);
     $('tbody tr:last-of-type').append('<td><button type="button" class="btn btn-danger">Delete</button></td>');
 }
 
@@ -150,6 +148,6 @@ function reset() {
 
 /**
  * Listen for the document to load and reset the data to the initial state
- */$(document).ready(function(){
+ */$(document).ready(function () {
     updateStudentList();
 });

@@ -8,15 +8,17 @@
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
 </head>
 <body>
-<div class="container-fluid">
-    <div class="">
+
+<div class="container-fluid col-sm-10 col-sm-offset-1">
+    <div class="row">
         <!-- only show this element when the isnt on mobile -->
-        <h1 class='hidden-xs'>Student Grade Table
-            <small>Grade Average : <span class="avgGrade"></span></small>
+        <h1 class="hidden-xs">Student Grade Table
+            <small class="pull-right">Grade Average : <span class="badge avgGrade">0</span></small>
         </h1>
         <!-- only show this element when the user gets to a mobile version -->
-        <h3 class="hidden-lg">Student Grade Table
-            <small>Grade Average : <span class="avgGrade"></span></small>
+        <h3 class="visible-xs">Student Grade Table
+            <small>Grade Average : <span class="badge avgGrade">0</span></small>
+
         </h3>
     </div>
     <div class="student-add-form">
@@ -44,8 +46,10 @@
         <button type="button" class="btn btn-success" onclick="">Add</button>
         <button type="button" class="btn btn-default" onclick="">Cancel</button>
     </div>
-    <div class=" row student-list-container">
-        <table class="student-list">
+
+
+    <div class="student-list-container">
+        <table class="table student-list">
             <thead>
             <tr>
                 <th>Student Name</th>
@@ -61,4 +65,3 @@
 </div>
 </body>
 </html>
-

@@ -62,7 +62,7 @@ function calculateAverage() {
     var i;
     var scores = 0;
     for (i = 0; i < student_array.length; i++) {
-       scores+= student_array[i].grade
+       scores+= Number(student_array[i].grade);
     }
     if (i > 0){return scores/i;}
     else {return 0;}

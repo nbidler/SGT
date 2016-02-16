@@ -20,6 +20,7 @@ function addClicked() {
 
     addStudent();//add student object to student_array
     clearAddStudentForm();
+    updateData();
 }
 
 /**
@@ -38,6 +39,7 @@ function addStudent()
 {
     var new_student = {name: $('#studentName').val(), course: $('#course').val(), grade: $('#studentGrade').val()};
     student_array.push(new_student);
+    addStudentToDom(new_student);
     clearAddStudentForm();
     return;
 }
@@ -62,7 +64,8 @@ function calculateAverage() {
     for (i = 0; i < student_array.length; i++) {
        scores+= student_array[i].grade
     }
-    return scores/i;
+    if (i > 0){return scores/i;}
+    else {return 0;}
 }
 
 /**
@@ -78,12 +81,23 @@ function updateData()
 /**
  * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
  */
+function updateStudentList() {
+
+}
 
 /**
  * addStudentToDom - take in a student object, create html elements from the values and then append the elements
  * into the .student_list tbody
  * @param studentObj
  */
+function addStudentToDom(studentObj)
+{
+    $('tbody').append('<tr>');
+    $('tbody tr:last-of-type').append('<td>'+studentObj.name);
+    $('tbody tr:last-of-type').append('<td>'+studentObj.course);
+    $('tbody tr:last-of-type').append('<td>'+studentObj.grade);
+    $('tbody tr:last-of-type').append('<td><button type="button" class="btn btn-danger">Delete</button></td>');
+}
 
 function addStudentToDom (student_object){
 
@@ -104,9 +118,9 @@ function addStudentToDom (student_object){
 function reset() {
     student_array = [];
     inputIds = [];
-    cancelClicked;
+    updateData();
+    cancelClicked();
 }
-
 
 /**
  * Listen for the document to load and reset the data to the initial state

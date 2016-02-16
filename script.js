@@ -5,9 +5,9 @@
  * student_array - global array to hold student objects
  * @type {Array}
  */
-var student_array = [{name: 'first', course: 'frist', grade: '0'},
+var student_array = [];/*{name: 'first', course: 'frist', grade: '0'},
     {name: 'second', course: 'secnod', grade: '50'},
-    {name: 'third', course: 'thrid', grade: '100'}];
+    {name: 'third', course: 'thrid', grade: '100'}];*/
 
 /**
  * inputIds - id's of the elements that are used to add students
@@ -43,11 +43,12 @@ function cancelClicked() {
 function addStudent()//called by addClicked
 {
     //make new student object
-    var new_student = {name: $('#' + inputIds[0]).val(),
-            course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val()};
+    var new_student = {
+        name: $('#' + inputIds[0]).val(),//Making a new object with values from display input
+        course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val()
+    };
     //assume not already present
     var matchNotFound = true;
-
     for (student in student_array) {
         //if already present, don't put into array
         if (student_array[student].name == new_student.name &&
@@ -147,12 +148,11 @@ function updateStudentList() {
 function addStudentToDom(studentObj)//meant to add one student to the DOM, one object in the array
 // is passed into this function
 {
-    var studentRow = $('<tr>')
-
-    studentRow.append('<td>' + studentObj.name);
-    $('tbody tr:last-of-type').append('<td>' + studentObj.course);
-    $('tbody tr:last-of-type').append('<td>' + studentObj.grade);
-    $('tbody tr:last-of-type').append('<td><button type="button" class="btn btn-danger">Delete</button></td>');
+    var studentRow = $('<tr>');//studentRow is now a table row
+    studentRow.append('<td>' + studentObj.name);//The student object is now appended to
+    studentRow.append('<td>' + studentObj.course);
+    studentRow.append('<td>' + studentObj.grade);
+    studentRow.append('<td><button type="button" class="btn btn-danger">Delete</button></td>');
     $('tbody').append(studentRow);
 }
 
@@ -170,4 +170,5 @@ function reset() {
  * Listen for the document to load and reset the data to the initial state
  */$(document).ready(function () {
     updateStudentList();
+    reset();
 });

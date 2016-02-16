@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
+
+var dummydata = [
+  {"name": 'first', "course": 'frist', "grade": '0'},
+  {"name": 'second', "course": 'secnod', "grade": '50'},
+  {"name": 'third', "course": 'thrid', "grade": '100'}
+];

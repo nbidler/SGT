@@ -8,6 +8,7 @@
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
 </head>
 <body>
+
 <div class="container-fluid col-sm-10 col-sm-offset-1">
     <div class="row">
         <!-- only show this element when the isnt on mobile -->
@@ -17,33 +18,36 @@
         <!-- only show this element when the user gets to a mobile version -->
         <h3 class="visible-xs">Student Grade Table
             <small>Grade Average : <span class="badge avgGrade">0</span></small>
+
         </h3>
     </div>
     <div class="student-add-form">
         <h4>Add Student</h4>
-        <div>
-            <span>
-                <span class="glyphicon"></span>
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group-addon">
+                <span class=" glyphicon glyphicon-user"></span>
             </span>
-            <input type="text" class="" name="studentName" id="studentName" placeholder="Student Name">
+            <input  type="text" class="form-control input-sm" name="studentName" id="studentName" placeholder="Student Name">
         </div>
-        <div class="">
-            <span class="">
-                <span class="glyphicon"></span>
+        <div class=" form-group input-group input-group-sm">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-list-alt"></span>
             </span>
-            <input type="text" class="" name="course" id="course"
+            <input type="text" class="form-control input-sm" name="course" id="course"
                    placeholder="Student Course">
         </div>
-        <div class="">
-            <span class="">
-                <span class="glyphicon"></span>
+        <div class="form-group input-group input-group-sm">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-education"></span>
             </span>
-            <input type="text" class="" name="studentGrade" id="studentGrade"
+            <input type="text" class="form-control input-sm" name="studentGrade" id="studentGrade"
                    placeholder="Student Grade">
         </div>
-        <button type="button" class="" onclick="">Add</button>
-        <button type="button" class="" onclick="">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="">Add</button>
+        <button type="button" class="btn btn-default" onclick="">Cancel</button>
     </div>
+
+
     <div class="student-list-container">
         <table class="table student-list">
             <thead>

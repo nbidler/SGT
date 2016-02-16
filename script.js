@@ -86,7 +86,10 @@ function calculateAverage() {
  */
 
 function addStudentToDom (student_object){
-    $('tr' 'th':first-child).
+
+    $('tbody').append('<tr> ');
+    $()
+
 
 }
 

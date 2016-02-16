@@ -76,7 +76,10 @@ function calculateAverage() {
  * into the .student_list tbody
  * @param studentObj
  */
-function addStudentToDom (
+function addStudentToDom (student_object){
+    $('tr' 'th':first-child).
+
+}
 
 
 

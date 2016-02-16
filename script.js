@@ -96,7 +96,7 @@ function updateData()
 function updateStudentList() {
 var currentName;
 var currentCourse;
-for (student in student_array){
+for (var student in student_array){
     currentName =  student.name;
     currentCourse = student.course;
     var matchNotFound = true;

@@ -147,11 +147,13 @@ function updateStudentList() {
 function addStudentToDom(studentObj)//meant to add one student to the DOM, one object in the array
 // is passed into this function
 {
-    $('tbody').append('<tr>');
-    $('tbody tr:last-of-type').append('<td>' + studentObj.name);
+    var studentRow = $('<tr>')
+
+    studentRow.append('<td>' + studentObj.name);
     $('tbody tr:last-of-type').append('<td>' + studentObj.course);
     $('tbody tr:last-of-type').append('<td>' + studentObj.grade);
     $('tbody tr:last-of-type').append('<td><button type="button" class="btn btn-danger">Delete</button></td>');
+    $('tbody').append(studentRow);
 }
 
 

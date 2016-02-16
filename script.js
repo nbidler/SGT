@@ -51,12 +51,6 @@ function clearAddStudentForm()
     $('#studentGrade').text('');
 }
 
-function clearAddStudentForm()
-{
-    $('#studentName').text('');
-    $('#course').text('');
-    $('#studentGrade').text('');
-}
 /**
  * calculateAverage - loop through the global student array and calculate average grade and return that value
  * @returns {number}
@@ -66,7 +60,6 @@ function calculateAverage() {
     var scores = 0;
     for (i = 0; i < student_array.length; i++) {
        scores+= student_array[i].grade
-
     }
     return scores/i;
 }
@@ -74,6 +67,13 @@ function calculateAverage() {
 /**
  * updateData - centralized function to update the average and call student list update
  */
+function updateData()
+{
+    var newAvg = calculateAverage();
+
+    $('.avgGrade').text(newAvg);
+    updateStudentList();
+}
 
 /**
  * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
@@ -92,7 +92,6 @@ function reset() {
     student_array = [];
     inputIds = [];
     cancelClicked;
-    clearAddStudentForm;
 }
 
 

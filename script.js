@@ -89,6 +89,22 @@ function updateData()
  * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
  */
 function updateStudentList() {
+    //loop through student_array
+    for (student in student_array)
+    {
+        //take name and course
+
+        //loop through displayed rows
+
+        //if name-course pair is already displayed, then doesn't need to be added to display
+
+        //end loop
+
+        //if reaches end and not found, then needs to be added, pass to to addStudentToDom
+
+        //end loop
+    }
+
 
 }
 

@@ -17,14 +17,14 @@ var inputIds = ['studentName', 'course', 'studentGrade'];
  * addClicked - Event Handler when user clicks the add button
  */
 function addClicked() {
+
     addStudent();//add student object to student_array
 }
 
 /**
  * cancelClicked - Event Handler when user clicks the cancel button, should clear out student form
  */
-function cancelClicked()
-{
+function cancelClicked() {
     clearAddStudentForm();
 }
 
@@ -70,7 +70,6 @@ function calculateAverage() {
 function updateData()
 {
     var newAvg = calculateAverage();
-
     $('.avgGrade').text(newAvg);
     updateStudentList();
 }

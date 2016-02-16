@@ -19,6 +19,7 @@ var inputIds = ['studentName', 'course', 'studentGrade'];
  * addClicked - Event Handler when user clicks the add button
  */
 function addClicked() {
+
     addStudent();//add student object to student_array
     updateData();
     clearAddStudentForm();
@@ -27,21 +28,24 @@ function addClicked() {
 /**
  * cancelClicked - Event Handler when user clicks the cancel button, should clear out student form
  */
-function cancelClicked()
-{
+function cancelClicked() {
     clearAddStudentForm();
 }
 
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
  *
+ *
+ *
+ *
  * @return undefined
  */
-function addStudent()
+function addStudent()//called by addClicked
 {
     var new_student = {name: $('#' + inputIds[0]).val(),
             course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val()};
     student_array.push(new_student);
+
     return;
 }
 
@@ -80,7 +84,6 @@ function calculateAverage() {
 function updateData()
 {
     var newAvg = +(calculateAverage()).toFixed(2);
-
     $('.avgGrade').text(newAvg);
     updateStudentList();
 }
@@ -88,7 +91,35 @@ function updateData()
 /**
  * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
  */
+//add many students to the DOM, this is a loop, should also call addStudentToDOM
+/*Loop through student array, loop through display rows*/
 function updateStudentList() {
+var currentName;
+var currentCourse;
+for (var student in student_array){
+    currentName =  student.name;
+    currentCourse = student.course;
+    var matchNotFound = true;
+    var currentRows = $('tr').length;//Gives us how many rows are currently displayed
+    for (var i = 1; i<currentRows; i++){
+        var row = $('tr:nth-of-type('+ (i+1) +')');// targeting current row, creating a string withinn nth of type
+        //parentheses
+        //Row td first-of-type is the same as currentName and Row td nth-of-type(2) is the same as currentCourse
+        //then the entry is already there, and set match not found to false.  Break.
+        if (
+        (row.find('td:first-of-type').val()==currentName) &&//finds the first td inside the row
+        (row.find('td:nth-of-type(2)').val()==currentCourse))//finds the second td inside the row
+        {
+            matchNotFound = false;
+            break;
+        }
+    }
+
+if (matchNotFound) {
+    addStudentToDom(student);
+}
+}
+
 
 }
 
@@ -97,7 +128,8 @@ function updateStudentList() {
  * into the .student_list tbody
  * @param studentObj
  */
-function addStudentToDom(studentObj)
+function addStudentToDom(studentObj)//meant to add one student to the DOM, one object in the array
+// is passed into this function
 {
     $('tbody').append('<tr>');
     $('tbody tr:last-of-type').append('<td>'+studentObj.name);
@@ -105,6 +137,7 @@ function addStudentToDom(studentObj)
     $('tbody tr:last-of-type').append('<td>'+studentObj.grade);
     $('tbody tr:last-of-type').append('<td><button type="button" class="btn btn-danger">Delete</button></td>');
 }
+
 
 /**
  * reset - resets the application to initial state. Global variables reset, DOM get reset to initial load state

@@ -87,8 +87,12 @@ function updateData()
 
 function addStudentToDom (student_object){
 
+    for (var i= 0; i<student_array.length; i++){
+        for(var j=0; j)
+    }
+
     $('tbody').append('<tr> ');
-    $()
+
 
 
 }

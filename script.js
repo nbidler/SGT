@@ -89,28 +89,34 @@ function updateData() {
 /**
  * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
  */
-//add many students to the DOM, this is a loop, should also call addStudentToDOM
-/*Loop through student array, loop through display rows*/
 function updateStudentList() {
     var currentName;
     var currentCourse;
-    for (var student in student_array) {
+
+    for (student in student_array) {//loop through student_array
+        //take name and course
         currentName = student_array[student].name;
         currentCourse = student_array[student].course;
+        //assumes entry is not already displayed
         var matchNotFound = true;
-        var currentRows = $('tr').length;//Gives us how many rows are currently displayed
+        //Gives us how many rows are currently displayed
+        var currentRows = $('tr').length;
+        //Except for table head, loop through displayed rows
         for (var i = 0; i < currentRows; i++) {
             var row = $('tr:nth-of-type(' + (i + 1) + ')');// targeting current row, creating a string withinn nth of type
             //parentheses
             //Row td first-of-type is the same as currentName and Row td nth-of-type(2) is the same as currentCourse
             //then the entry is already there, and set match not found to false.  Break.
+            //if name-course pair is already displayed, then doesn't need to be added to display
             if (
                 (row.find('td:first-of-type').text() == currentName) &&//finds the first td inside the row
                 (row.find('td:nth-of-type(2)').text() == currentCourse))//finds the second td inside the row
+
             {
                 matchNotFound = false;
                 break;
             }
+
         }
 
         if (matchNotFound) {//match not found is equal to true

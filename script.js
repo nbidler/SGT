@@ -42,12 +42,24 @@ function cancelClicked() {
  */
 function addStudent()//called by addClicked
 {
-    var new_student = {
-        name: $('#' + inputIds[0]).val(),
-        course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val()
-    };
-    student_array.push(new_student);
+    //make new student object
+    var new_student = {name: $('#' + inputIds[0]).val(),
+            course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val()};
+    //assume not already present
+    var matchNotFound = true;
 
+    for (student in student_array) {
+        //if already present, don't put into array
+        if (student_array[student].name == new_student.name &&
+            student_array[student].course == new_student.course) {
+            matchNotFound = false;
+            break;
+        }
+    }
+    //if not present, add to array
+    if (matchNotFound) {
+        student_array.push(new_student);
+    }
     return;
 }
 

@@ -5,7 +5,9 @@
  * student_array - global array to hold student objects
  * @type {Array}
  */
-var student_array =[];
+var student_array =[{name: 'first', course: 'frist', grade: '0'},
+    {name: 'second', course: 'secnod', grade: '50'},
+    {name: 'third', course: 'thrid', grade: '100'}];
 
 /**
  * inputIds - id's of the elements that are used to add students
@@ -18,8 +20,8 @@ var inputIds = ['studentName', 'course', 'studentGrade'];
  */
 function addClicked() {
     addStudent();//add student object to student_array
-    clearAddStudentForm();
     updateData();
+    clearAddStudentForm();
 }
 
 /**
@@ -37,10 +39,9 @@ function cancelClicked()
  */
 function addStudent()
 {
-    var new_student = {name: $('#studentName').val(), course: $('#course').val(), grade: $('#studentGrade').val()};
+    var new_student = {name: $('#' + inputIds[0]).val(),
+            course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val()};
     student_array.push(new_student);
-    addStudentToDom(new_student);
-    clearAddStudentForm();
     return;
 }
 
@@ -59,13 +60,18 @@ function clearAddStudentForm()
  * @returns {number}
  */
 function calculateAverage() {
-    var i;
-    var scores = 0;
-    for (i = 0; i < student_array.length; i++) {
-       scores+= Number(student_array[i].grade);
+    if (student_array.length < 1)
+    {
+        return 0;
     }
-    if (i > 0){return scores/i;}
-    else {return 0;}
+    else
+    {
+        var scores = 0;
+        for (var i = 0; i < student_array.length; i++) {
+            scores+= Number(student_array[i].grade);
+        }
+        return (scores / student_array.length);
+    }
 }
 
 /**
@@ -73,7 +79,7 @@ function calculateAverage() {
  */
 function updateData()
 {
-    var newAvg = calculateAverage();
+    var newAvg = +(calculateAverage()).toFixed(2);
 
     $('.avgGrade').text(newAvg);
     updateStudentList();
@@ -105,7 +111,6 @@ function addStudentToDom(studentObj)
  */
 function reset() {
     student_array = [];
-    inputIds = [];
     updateData();
     cancelClicked();
 }
@@ -113,5 +118,5 @@ function reset() {
 /**
  * Listen for the document to load and reset the data to the initial state
  */$(document).ready(function(){
-    reset()
+    updateStudentList();
 });

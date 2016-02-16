@@ -6,18 +6,20 @@
  * @type {Array}
  */
 var student_array =[];
+
 /**
  * inputIds - id's of the elements that are used to add students
  * @type {string[]}
  */
+var inputIds = ['studentName', 'course', 'studentGrade'];
 
-var inputIds = [];
 /**
  * addClicked - Event Handler when user clicks the add button
  */
 function addClicked() {
-    addStudent();//add student object to student_aray
+    addStudent();//add student object to student_array
 }
+
 /**
  * cancelClicked - Event Handler when user clicks the cancel button, should clear out student form
  */
@@ -25,7 +27,6 @@ function cancelClicked()
 {
     clearAddStudentForm();
 }
-
 
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
@@ -39,9 +40,16 @@ function addStudent()
     clearAddStudentForm();
     return;
 }
+
 /**
  * clearAddStudentForm - clears out the form values based on inputIds variable
  */
+function clearAddStudentForm()
+{
+    $('#studentName').text('');
+    $('#course').text('');
+    $('#studentGrade').text('');
+}
 
 function clearAddStudentForm()
 {
@@ -76,11 +84,11 @@ function calculateAverage() {
  * into the .student_list tbody
  * @param studentObj
  */
+
 function addStudentToDom (student_object){
     $('tr' 'th':first-child).
 
 }
-
 
 
 /**
@@ -98,6 +106,4 @@ function reset() {
  * Listen for the document to load and reset the data to the initial state
  */$(document).ready(function(){
     reset()
-
-
 });

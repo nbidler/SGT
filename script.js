@@ -18,6 +18,7 @@ var inputIds = ['studentName', 'course', 'studentGrade'];
  */
 function addClicked() {
     addStudent();//add student object to student_array
+    clearAddStudentForm();
 }
 
 /**
@@ -46,9 +47,9 @@ function addStudent()
  */
 function clearAddStudentForm()
 {
-    $('#studentName').text('');
-    $('#course').text('');
-    $('#studentGrade').text('');
+    $('#studentName').val('');
+    $('#course').val('');
+    $('#studentGrade').val('');
 }
 
 /**

@@ -35,7 +35,7 @@ function cancelClicked() {
  *
  * @return undefined
  */
-function addStudent()
+function addStudent()//called by addClicked
 {
     var new_student = {name: $('#studentName').val(), course: $('#course').val(), grade: $('#studentGrade').val()};
     student_array.push(new_student);
@@ -81,7 +81,7 @@ function updateData()
 /**
  * updateStudentList - loops through global student array and appends each objects data into the student-list-container > list-body
  */
-function updateStudentList() {
+function updateStudentList() {//add many students to the DOM, this is a loop, should also call addStudentToDOM
 
 }
 
@@ -90,7 +90,8 @@ function updateStudentList() {
  * into the .student_list tbody
  * @param studentObj
  */
-function addStudentToDom(studentObj)
+function addStudentToDom(studentObj)//meant to add one student to the DOM, one object in the array
+// is passed into this function
 {
     $('tbody').append('<tr>');
     $('tbody tr:last-of-type').append('<td>'+studentObj.name);
@@ -99,17 +100,17 @@ function addStudentToDom(studentObj)
     $('tbody tr:last-of-type').append('<td><button type="button" class="btn btn-danger">Delete</button></td>');
 }
 
-function addStudentToDom (student_object){
-
-    for (var i= 0; i<student_array.length; i++){
-        for(var j=0; j)
-    }
-
-    $('tbody').append('<tr> ');
-
-
-
-}
+//function addStudentToDom (student_object){
+//
+//    for (var i= 0; i<student_array.length; i++){
+//        for(var j=0; j)
+//
+//
+//    $('tbody').append('<tr> ');
+//
+//
+//
+//}
 
 
 /**

@@ -40,10 +40,12 @@ function cancelClicked() {
     clearAddStudentForm();
 }
 
+
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
  * @return undefined
  */
+
 function addStudent()//called by addClicked
 {
     //make new student object
@@ -208,8 +210,11 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
         console.log('i was clicked',studentRow,studentObj);
         var the_row = student_array.indexOf(studentObj);
         console.log('I am in row: ',existingRows);
-        //delete student_array[existingRows];
+        //delete student_array[existingRows];//Could be used if we want to have one item in the array as undefined
+        //in the index
         student_array[existingRows].deleted=true;
+        $(this).parent().parent().remove();
+
     });
     studentButtonTD.append(delete_button);
     studentRow.append(studentNameTD, studentCourseTD, studentGradeTD, studentButtonTD);
@@ -230,5 +235,7 @@ function reset() {
  * Listen for the document to load and reset the data to the initial state
  */$(document).ready(function () {
     updateStudentList();
+
     //reset();
 });
+

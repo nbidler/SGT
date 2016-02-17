@@ -8,8 +8,8 @@
 var student_array = [{name: 'first', course: 'frist', grade: '0', deleted:false},
     {name: 'second', course: 'secnod', grade: '50', deleted:false},
     {name: 'third', course: 'thrid', grade: '100', deleted:false},
-    {name: '4third', course: 'thrid', grade: '100', deleted:false},
-    {name: '5third', course: 'thrid', grade: '100', deleted:false}];
+    {name: 'four', course: 'fore', grade: '25', deleted:false},
+    {name: 'fifth', course: 'fiff', grade: '75', deleted:false}];
 //var student_array = {
 //    0: {name: 'first', course: 'frist', grade: '0'},
 //    1: {name: 'second', course: 'secnod', grade: '50'},
@@ -58,7 +58,8 @@ function addStudent()//called by addClicked
     for (student in student_array) {
         //if already present, don't put into array
         if (student_array[student].name == new_student.name &&
-            student_array[student].course == new_student.course) {
+            student_array[student].course == new_student.course &&
+            student_array[student].deleted == false) {
             matchNotFound = false;
             break;
         }
@@ -97,16 +98,33 @@ function clearAddStudentForm() {
  * @returns {number}
  */
 function calculateAverage() {
-    if (student_array.length < 1) {
-        return 0;
-    }
-    else {
+    var deletedEntries=0;
+    //if nothing in array, return 0
+    if (student_array.length > 0)
+    {
         var scores = 0;
-        for (var i = 0; i < student_array.length; i++) {
-            scores += Number(student_array[i].grade);
+
+        for (var i = 0; i < student_array.length; i++)
+        {
+            //if valid entry, add to total
+            if (student_array[i].deleted == false)
+            {
+                scores += Number(student_array[i].grade);
+            }
+            //if not, skip and add to deleted entries count
+            else
+            {
+                deletedEntries++;
+            }
         }
-        return (scores / student_array.length);
+        //if more than 1 valid entry, calculate average
+        if (student_array.length > deletedEntries)
+        {
+            return (scores / (student_array.length - deletedEntries));
+        }
     }
+    //if array length <1 OR no un-deleted entries
+    return 0;
 }
 
 /**
@@ -126,6 +144,10 @@ function updateStudentList() {
     var currentCourse;
 
     for (student in student_array) {//loop through student_array
+        //if entry deleted, skip to next
+        if(student_array[student].deleted){
+            continue;
+        }
         //take name and course
         currentName = student_array[student].name;
         currentCourse = student_array[student].course;
@@ -135,9 +157,6 @@ function updateStudentList() {
         var currentRows = $('tr').length;
         //Except for table head, loop through displayed rows
         for (var i = 0; i < currentRows; i++) {
-            if(student_array[i].deleted){
-                continue;
-            }
             var row = $('tr:nth-of-type(' + (i + 1) + ')');// targeting current row, creating a string withinn nth of type
             //parentheses
             //Row td first-of-type is the same as currentName and Row td nth-of-type(2) is the same as currentCourse
@@ -158,8 +177,6 @@ function updateStudentList() {
             addStudentToDom(student_array[student]);//adds the new student array object
         }
     }
-
-
 }
 
 /**
@@ -176,10 +193,12 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     var studentNameTD = $('<td>',{
         text: studentObj.name
     });
-    studentCourseTD = $('<td>').text(studentObj.course);
-    //studentRow.append('<td>' + studentObj.course);
-    studentGradeTD = $('<td>').text(studentObj.grade);
-    //studentRow.append('<td>' + studentObj.grade);
+    var studentCourseTD = $('<td>',{
+        text: studentObj.course
+        });
+    var studentGradeTD = $('<td>',{
+        text: studentObj.grade
+    });
     var studentButtonTD = $('<td>');
     var delete_button = $('<button>',{
         type: 'button',
@@ -218,11 +237,5 @@ function reset() {
     updateStudentList();
 
     //reset();
-
-    //$('td').on('click', 'button', function() {
-    //    console.log($( this ));
-    //    removeStudent($(this));
-    //    //removeStudentDOM();
-    //});
 });
 

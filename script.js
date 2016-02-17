@@ -5,11 +5,14 @@
  * student_array - global array to hold student objects
  * @type {Array}
  */
-var student_array = [{name: 'first', course: 'frist', grade: '0', deleted:false},
-    {name: 'second', course: 'secnod', grade: '50', deleted:false},
-    {name: 'third', course: 'thrid', grade: '100', deleted:false},
+var student_array =[];
+
+
+/*  [{name: 'first', course: 'frist', grade: '50', deleted:false},
+    {name: 'second', course: 'secnod', grade: '2', deleted:false},
+    {name: 'third', course: 'thrid', grade: '90', deleted:false},
     {name: 'four', course: 'fore', grade: '25', deleted:false},
-    {name: 'fifth', course: 'fiff', grade: '75', deleted:false}];
+    {name: 'fifth', course: 'fiff', grade: '75', deleted:false}];*/
 //var student_array = {
 //    0: {name: 'first', course: 'frist', grade: '0'},
 //    1: {name: 'second', course: 'secnod', grade: '50'},
@@ -31,6 +34,7 @@ function addClicked() {
     addStudent();//add student object to student_array
     updateData();
     clearAddStudentForm();
+    gradesHighLow();
 }
 
 /**
@@ -51,7 +55,9 @@ function addStudent()//called by addClicked
     //make new student object
     var new_student = {
         name: $('#' + inputIds[0]).val(),//Making a new object with values from display input
-        course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val(), deleted:false
+        course: $('#' + inputIds[1]).val(),
+        grade: $('#' + inputIds[2]).val(),
+        deleted:false
     };
     //assume not already present
     var matchNotFound = true;
@@ -205,6 +211,7 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
         class: 'btn btn-danger',
         text: 'Delete'
     });
+    studentObj.element = studentRow;
     delete_button.click(function(){
         console.log('i was clicked',studentRow,studentObj);
         //var the_row = student_array.indexOf(studentObj);
@@ -229,10 +236,32 @@ function reset() {
     cancelClicked();
 }
 
+//add the ability to highlight the lowest and highest grades
+function gradesHighLow() {
+    var lowGrade = student_array[0].grade;
+    var highGrade = 0;
+    for (var i = 0; i < student_array.length; i++) {
+        var grade = student_array[i].grade;
+        if (grade < lowGrade) {
+            lowGrade = grade;
+            //return lowGrade;
+
+        }
+        else if (grade > highGrade){
+         highGrade = grade;
+         //return highGrade;
+         }
+    }
+
+    console.log("lowest", lowGrade);
+    console.log("highest", highGrade);
+}
+
 /**
  * Listen for the document to load and reset the data to the initial state
  */$(document).ready(function () {
     updateData();
-    //reset();
+    gradesHighLow();
+     //reset();
 });
 

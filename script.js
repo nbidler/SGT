@@ -63,13 +63,14 @@ function addStudent()//called by addClicked
 /**
  * removeStudent  - removes a student object from global student array
  * based on the data-index of the clicked 'delete' button
- * @param button
- * @return undefined
+ * @param button passed as jquery object, i.e. $(this)
  */
 
 function removeStudent(delButton)
 {
-
+    //store target index of pressed delete button
+    var targetIndex = delButton.attr("data-index");
+    student_array.splice(targetIndex, 1);
 }
 
 /**
@@ -181,4 +182,9 @@ function reset() {
  */$(document).ready(function () {
     updateStudentList();
     reset();
+
+    document.getElementsByClassName('btn-danger').onclick = function() {
+        removeStudent($(this));
+        //removeStudentDOM();
+    };
 });

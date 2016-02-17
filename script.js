@@ -51,7 +51,7 @@ function addStudent()//called by addClicked
     //make new student object
     var new_student = {
         name: $('#' + inputIds[0]).val(),//Making a new object with values from display input
-        course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val()
+        course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val(), deleted:false
     };
     //assume not already present
     var matchNotFound = true;
@@ -214,13 +214,11 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
         //in the index
         student_array[existingRows].deleted=true;
         $(this).parent().parent().remove();
-
     });
     studentButtonTD.append(delete_button);
     studentRow.append(studentNameTD, studentCourseTD, studentGradeTD, studentButtonTD);
     $('tbody').append(studentRow);
 }
-
 
 /**
  * reset - resets the application to initial state. Global variables reset, DOM get reset to initial load state

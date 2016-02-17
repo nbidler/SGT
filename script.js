@@ -203,7 +203,6 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     var delete_button = $('<button>',{
         type: 'button',
         class: 'btn btn-danger',
-        'data-index':existingRows,
         text: 'Delete'
     });
     delete_button.click(function(){

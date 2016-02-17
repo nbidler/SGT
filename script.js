@@ -191,8 +191,11 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
         console.log('i was clicked',studentRow,studentObj);
         var the_row = student_array.indexOf(studentObj);
         console.log('I am in row: ',existingRows);
-        //delete student_array[existingRows];
+        //delete student_array[existingRows];//Could be used if we want to have one item in the array as undefined
+        //in the index
         student_array[existingRows].deleted=true;
+        $(this).parent().parent().remove();
+
     });
     studentButtonTD.append(delete_button);
     studentRow.append(studentNameTD, studentCourseTD, studentGradeTD, studentButtonTD);

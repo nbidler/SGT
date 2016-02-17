@@ -32,14 +32,21 @@ function cancelClicked() {
     clearAddStudentForm();
 }
 
-/**
- * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
- *
- *
- *
- *
- * @return undefined
- */
+
+//function deleteClicked() {
+//var deleteButton = $('data-index');//delete button is assigned to a variable
+//$(deleteButton).click(removeStudent(){
+//});
+//}
+
+
+//function removeStudentDom(){
+//    $(this).parent.find.('td').val('');
+//}
+
+
+ //* addStudent - creates a student objects based on input fields in the form and adds the object to global student array
+ //* @return undefined
 function addStudent()//called by addClicked
 {
     //make new student object

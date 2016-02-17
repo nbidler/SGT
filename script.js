@@ -33,20 +33,11 @@ function cancelClicked() {
 }
 
 
-//function deleteClicked() {
-//var deleteButton = $('data-index');//delete button is assigned to a variable
-//$(deleteButton).click(removeStudent(){
-//});
-//}
+/**
+ * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
+ * @return undefined
+ */
 
-
-function removeStudentDom(){
-  $(this).remove();
-}
-
-
- //* addStudent - creates a student objects based on input fields in the form and adds the object to global student array
- //* @return undefined
 function addStudent()//called by addClicked
 {
     //make new student object
@@ -69,6 +60,19 @@ function addStudent()//called by addClicked
         student_array.push(new_student);
     }
     return;
+}
+
+/**
+ * removeStudent  - removes a student object from global student array
+ * based on the data-index of the clicked 'delete' button
+ * @param button passed as jquery object, i.e. $(this)
+ */
+
+function removeStudent(delButton)
+{
+    //store target index of pressed delete button
+    var targetIndex = delButton.attr("data-index");
+    student_array.splice(targetIndex, 1);
 }
 
 /**
@@ -155,11 +159,13 @@ function updateStudentList() {
 function addStudentToDom(studentObj)//meant to add one student to the DOM, one object in the array
 // is passed into this function
 {
+    var existingRows = $('tbody tr').length;//stores number of rows currently existing
     var studentRow = $('<tr>');//studentRow is now a table row
     studentRow.append('<td>' + studentObj.name);//The student object is now appended to
     studentRow.append('<td>' + studentObj.course);
     studentRow.append('<td>' + studentObj.grade);
-    studentRow.append('<td><button type="button" class="btn btn-danger">Delete</button></td>');
+    studentRow.append('<td><button type="button" class="btn btn-danger" data-index="' +
+        (existingRows) + '">Delete</button></td>');
     $('tbody').append(studentRow);
 }
 
@@ -179,5 +185,9 @@ function reset() {
     updateStudentList();
     reset();
 
+    document.getElementsByClassName('btn-danger').onclick = function() {
+        removeStudent($(this));
+        //removeStudentDOM();
+    };
 
 });

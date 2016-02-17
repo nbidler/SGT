@@ -208,11 +208,11 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     });
     delete_button.click(function(){
         console.log('i was clicked',studentRow,studentObj);
-        var the_row = student_array.indexOf(studentObj);
+        //var the_row = student_array.indexOf(studentObj);
         console.log('I am in row: ',existingRows);
         //delete student_array[existingRows];//Could be used if we want to have one item in the array as undefined
         //in the index
-        student_array[existingRows].deleted=true;
+        student_array[student_array.indexOf(studentObj)].deleted=true;
         $(this).parent().parent().remove();
         updateData();
     });

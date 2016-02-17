@@ -34,10 +34,6 @@ function cancelClicked() {
 
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
- *
- *
- *
- *
  * @return undefined
  */
 function addStudent()//called by addClicked
@@ -62,6 +58,18 @@ function addStudent()//called by addClicked
         student_array.push(new_student);
     }
     return;
+}
+
+/**
+ * removeStudent  - removes a student object from global student array
+ * based on the data-index of the clicked 'delete' button
+ * @param button
+ * @return undefined
+ */
+
+function removeStudent(delButton)
+{
+
 }
 
 /**
@@ -148,11 +156,13 @@ function updateStudentList() {
 function addStudentToDom(studentObj)//meant to add one student to the DOM, one object in the array
 // is passed into this function
 {
+    var existingRows = $('tbody tr').length;//stores number of rows currently existing
     var studentRow = $('<tr>');//studentRow is now a table row
     studentRow.append('<td>' + studentObj.name);//The student object is now appended to
     studentRow.append('<td>' + studentObj.course);
     studentRow.append('<td>' + studentObj.grade);
-    studentRow.append('<td><button type="button" class="btn btn-danger">Delete</button></td>');
+    studentRow.append('<td><button type="button" class="btn btn-danger" data-index="' +
+        (existingRows) + '">Delete</button></td>');
     $('tbody').append(studentRow);
 }
 

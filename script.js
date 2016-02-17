@@ -5,11 +5,16 @@
  * student_array - global array to hold student objects
  * @type {Array}
  */
-var student_array = [{name: 'first', course: 'frist', grade: '0', deleted:false},
-    {name: 'second', course: 'secnod', grade: '50', deleted:false},
-    {name: 'third', course: 'thrid', grade: '100', deleted:false},
-    {name: 'four', course: 'fore', grade: '25', deleted:false},
-    {name: 'fifth', course: 'fiff', grade: '75', deleted:false}];
+
+
+
+var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted:false},
+    {name: 'Bob', course: 'Biology', grade: '65', deleted:false},
+    {name: 'Greg', course: 'Calculus', grade: '90', deleted:false},
+    {name: 'Mike', course: 'Engineering', grade: '78', deleted:false},
+    {name: 'Stephanie', course: 'Finance', grade: '75', deleted:false},
+    {name: 'Melanie', course: 'Finance', grade: '86', deleted:false}
+];
 //var student_array = {
 //    0: {name: 'first', course: 'frist', grade: '0'},
 //    1: {name: 'second', course: 'secnod', grade: '50'},
@@ -26,6 +31,9 @@ var inputIds = ['studentName', 'course', 'studentGrade'];
 /**
  * addClicked - Event Handler when user clicks the add button
  */
+
+
+var courseList = {};//
 function addClicked() {
 
     addStudent();//add student object to student_array
@@ -71,18 +79,22 @@ function addStudent()//called by addClicked
     return;
 }
 
+function addCourseName(course){
+    courseList[course] =1;
+}
+
 /**
  * removeStudent  - removes a student object from global student array
  * based on the data-index of the clicked 'delete' button
  * @param row of button clicked passed as jquery object, i.e. $(this)
  */
 
-function removeStudent(delButton)
-{
-    //store target index of pressed delete button
-    var targetIndex = delButton.find('button').attr("data-index");
-    student_array.splice(targetIndex, 1);
-}
+//function removeStudent(delButton)
+//{
+//    //store target index of pressed delete button
+//    var targetIndex = delButton.find('button').attr("data-index");
+//    student_array.splice(targetIndex, 1);
+//}
 
 /**
  * clearAddStudentForm - clears out the form values based on inputIds variable
@@ -211,9 +223,10 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
         console.log('I am in row: ',existingRows);
         //delete student_array[existingRows];//Could be used if we want to have one item in the array as undefined
         //in the index
-        student_array[student_array.indexOf(studentObj)].deleted=true;
+        student_array[student_array.indexOf(studentObj)].deleted=true;///Ask Nick why!
         $(this).parent().parent().remove();
         updateData();
+        //removeStudent()
     });
     studentButtonTD.append(delete_button);
     studentRow.append(studentNameTD, studentCourseTD, studentGradeTD, studentButtonTD);
@@ -229,10 +242,27 @@ function reset() {
     cancelClicked();
 }
 
+
+var classList = {};
+
+function courseEntry(a){
+    var charTyped = [];
+
+    $('#course').keyup(function(event){
+        $('#course').css('background-color','red');
+
+
+
+    }
+
+    )
+}
+
 /**
  * Listen for the document to load and reset the data to the initial state
  */$(document).ready(function () {
     updateData();
+    courseEntry();
     //reset();
 });
 

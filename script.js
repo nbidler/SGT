@@ -214,6 +214,7 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
         //in the index
         student_array[existingRows].deleted=true;
         $(this).parent().parent().remove();
+        updateData();
     });
     studentButtonTD.append(delete_button);
     studentRow.append(studentNameTD, studentCourseTD, studentGradeTD, studentButtonTD);
@@ -232,8 +233,7 @@ function reset() {
 /**
  * Listen for the document to load and reset the data to the initial state
  */$(document).ready(function () {
-    updateStudentList();
-
+    updateData();
     //reset();
 });
 

@@ -40,9 +40,9 @@ function cancelClicked() {
 //}
 
 
-//function removeStudentDom(){
-//    $(this).parent.find.('td').val('');
-//}
+function removeStudentDom(){
+  $(this).remove();
+}
 
 
  //* addStudent - creates a student objects based on input fields in the form and adds the object to global student array
@@ -178,4 +178,6 @@ function reset() {
  */$(document).ready(function () {
     updateStudentList();
     reset();
+
+
 });

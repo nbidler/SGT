@@ -213,6 +213,7 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     });
     studentObj.element = studentRow;
     delete_button.click(function(){
+        var newIndex = student_array.indexOf(studentObj);
         console.log('i was clicked',studentRow,studentObj);
         //var the_row = student_array.indexOf(studentObj);
         console.log('I am in row: ',existingRows);
@@ -220,7 +221,9 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
         //in the index
         student_array[student_array.indexOf(studentObj)].deleted=true;
         $(this).parent().parent().remove();
+        student_array.splice(newIndex, 1);
         updateData();
+        gradesHighLow();
     });
     studentButtonTD.append(delete_button);
     studentRow.append(studentNameTD, studentCourseTD, studentGradeTD, studentButtonTD);
@@ -240,19 +243,23 @@ function reset() {
 function gradesHighLow() {
     var lowGrade = student_array[0].grade;
     var highGrade = 0;
+    var newLow = student_array[0];
+    var newHigh = student_array[0];
     for (var i = 0; i < student_array.length; i++) {
-        var grade = student_array[i].grade;
+        $(student_array[i].element).removeClass("alert-danger alert-success");
+        var grade = parseInt(student_array[i].grade);
         if (grade < lowGrade) {
             lowGrade = grade;
-            //return lowGrade;
-
+            newLow = student_array[i];
         }
         else if (grade > highGrade){
          highGrade = grade;
-         //return highGrade;
+         newHigh = student_array[i];
          }
     }
 
+    $(newLow.element).addClass("alert-danger");
+    $(newHigh.element).addClass("alert-success");
     console.log("lowest", lowGrade);
     console.log("highest", highGrade);
 }

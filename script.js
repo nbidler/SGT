@@ -69,16 +69,28 @@ function loadClicked() {
 
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
+ * @param - OPTIONAL - passes student object to function, uses that instead of input from fields
+ *      - if nothing is passed to function, uses input from fields
  * @return undefined
  */
 
-function addStudent()//called by addClicked
+function addStudent(new_student)//called by addClicked
 {
-    //make new student object
-    var new_student = {
-        name: $('#' + inputIds[0]).val(),//Making a new object with values from display input
-        course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val(), deleted:false
-    };
+    //if not passed an object
+    if (new_student === undefined)
+    {
+        //make new student object
+        var new_student = {
+            name: $('#' + inputIds[0]).val(),//Making a new object with values from display input
+            course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val(), deleted:false
+        };
+    }
+    //if passed an object
+    else
+    {
+        //just adds property deleted with value false to object, passes on
+        new_student.deleted = false;
+    }
     //assume not already present
     var matchNotFound = true;
     for (student in student_array) {

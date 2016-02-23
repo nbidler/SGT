@@ -16,7 +16,7 @@ var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted: f
     {name: 'Melanie', course: 'Finance', grade: '86', deleted: false}
 ];
 
-var responseObj;
+//var responseObj;
 
 /**
  * inputIds - id's of the elements that are used to add students
@@ -25,9 +25,9 @@ var responseObj;
 var inputIds = ['studentName', 'course', 'studentGrade'];
 
 //Timer initially set to null for keyup checking.
-var keyUpTimer = null;
+/*var keyUpTimer = null;
 
-var courseList = {};
+var courseList = {};*/
 /**
  * addClicked - Event Handler when user clicks the add button
  */
@@ -60,13 +60,21 @@ function loadClicked() {
             api_key: 'L91wptvUmZ'
         },
         success: function(response) {
-            console.log(response);
-            responseObj = response;
+            //console.log(response);
+            //responseObj = response;
+            //console.log(student_array.length);
+
+            //parse response for individual student objects to process them
+            for (var i = 0; i < response.data.length; i++)
+            {
+                addStudent(response.data[i]);
+                //console.log(student_array.length);
+            }
+            //after updating student_array, update display of students
+            updateData();
         }
     });
-
     clearAddStudentForm();
-    updateData();
 }
 
 /**
@@ -91,8 +99,10 @@ function addStudent(new_student)//called by addClicked
     //if passed an object
     else
     {
+        //console.log(new_student);
         //just adds property deleted with value false to object, passes on
         new_student['deleted'] = false;
+        //console.log(new_student);
     }
 
     //assume not already present
@@ -109,10 +119,6 @@ function addStudent(new_student)//called by addClicked
     //if not present, add to array
     if (matchNotFound) {
         student_array.push(new_student);
-    }
-    for (var i=0; i<=responseObj.data.length; i++){
-        addStudent(responseObj.data[i]);
-        console.log(student_array);
     }
 }
 
@@ -228,7 +234,6 @@ function updateStudentList() {
 function addStudentToDom(studentObj)//meant to add one student to the DOM, one object in the array
 // is passed into this function
 {
-    var existingRows = $('tbody tr').length;//stores number of rows currently existing
     var studentRow = $('<tr>');//studentRow is now a table row
     //var studentNameTD = $('<td>').text(studentObj.name);
     var studentNameTD = $('<td>', {
@@ -248,11 +253,8 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     });
     studentObj.element = studentRow;
     delete_button.click(function () {
-
         removeStudent(studentObj);
-
         $(this).parent().parent().remove();
-        student_array.splice(newIndex, 1);
         updateData();
 
     });

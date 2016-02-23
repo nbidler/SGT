@@ -37,7 +37,6 @@ var courseList = {};
  */
 
 
-//
 function addClicked() {
 
     addStudent();//add student object to student_array
@@ -57,6 +56,19 @@ function cancelClicked() {
  * loadClicked - Event Handler when user clicks the load button, should load data from server
  */
 function loadClicked() {
+
+    $.ajax({
+        dataType:'json',
+        url: 'http://s-apis.learningfuze.com/sgt/get',
+        method: 'post',
+        data: {
+            api_key: 'L91wptvUmZ'
+        },
+        success: function(response) {
+            console.log(response);
+        }
+    });
+
     clearAddStudentForm();
     updateData();
 }

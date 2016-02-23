@@ -6,37 +6,39 @@
  * @type {Array}
  */
 
+var student_array = [];
 
-
-var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted:false},
-    {name: 'Bob', course: 'Biology', grade: '65', deleted:false},
-    {name: 'Greg', course: 'Calculus', grade: '90', deleted:false},
-    {name: 'Mike', course: 'Engineering', grade: '78', deleted:false},
-    {name: 'Stephanie', course: 'Finance', grade: '75', deleted:false},
-    {name: 'Melanie', course: 'Finance', grade: '86', deleted:false}
+var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted: false},
+    {name: 'Bob', course: 'Biology', grade: '65', deleted: false},
+    {name: 'Greg', course: 'Calculus', grade: '90', deleted: false},
+    {name: 'Mike', course: 'Engineering', grade: '78', deleted: false},
+    {name: 'Stephanie', course: 'Finance', grade: '75', deleted: false},
+    {name: 'Melanie', course: 'Finance', grade: '86', deleted: false}
 ];
-//var student_array = {
-//    0: {name: 'first', course: 'frist', grade: '0'},
-//    1: {name: 'second', course: 'secnod', grade: '50'},
-//    2: {name: 'third', course: 'thrid', grade: '100'},
-//    3: {name: '4third', course: 'thrid', grade: '100'},
-//    4: {name: '5third', course: 'thrid', grade: '100'}
-//}
+
+var responseObj;
+
 /**
  * inputIds - id's of the elements that are used to add students
  * @type {string[]}
  */
 var inputIds = ['studentName', 'course', 'studentGrade'];
 
+//Timer initially set to null for keyup checking.
+var keyUpTimer = null;
+
+var courseList = {};
 /**
  * addClicked - Event Handler when user clicks the add button
  */
+
 
 function addClicked() {
 
     addStudent();//add student object to student_array
     updateData();
     clearAddStudentForm();
+    gradesHighLow();
 }
 
 /**
@@ -50,7 +52,6 @@ function cancelClicked() {
  * loadClicked - Event Handler when user clicks the load button, should load data from server
  */
 function loadClicked() {
-
     $.ajax({
         dataType:'json',
         url: 'http://s-apis.learningfuze.com/sgt/get',
@@ -60,6 +61,7 @@ function loadClicked() {
         },
         success: function(response) {
             console.log(response);
+            responseObj = response;
         }
     });
 
@@ -76,6 +78,7 @@ function loadClicked() {
 
 function addStudent(new_student)//called by addClicked
 {
+
     //if not passed an object
     if (new_student === undefined)
     {
@@ -91,6 +94,7 @@ function addStudent(new_student)//called by addClicked
         //just adds property deleted with value false to object, passes on
         new_student['deleted'] = false;
     }
+
     //assume not already present
     var matchNotFound = true;
     for (student in student_array) {
@@ -106,12 +110,15 @@ function addStudent(new_student)//called by addClicked
     if (matchNotFound) {
         student_array.push(new_student);
     }
-    return;
+    for (var i=0; i<=responseObj.data.length; i++){
+        addStudent(responseObj.data[i]);
+        console.log(student_array);
+    }
 }
 
 /*function addCourseName(course){
-    courseList[course] =1;
-}*/
+ courseList[course] =1;
+ }*/
 
 /**
  * removeStudent  - removes a student object from global student array
@@ -119,9 +126,8 @@ function addStudent(new_student)//called by addClicked
  * @param row of button clicked passed as jquery object, i.e. $(this)
  */
 
-function removeStudent(studentObj)
-{
-    student_array[student_array.indexOf(studentObj)].deleted=true;
+function removeStudent(studentObj) {
+    student_array[student_array.indexOf(studentObj)].deleted = true;
 }
 
 /**
@@ -138,28 +144,23 @@ function clearAddStudentForm() {
  * @returns {number}
  */
 function calculateAverage() {
-    var deletedEntries=0;
+    var deletedEntries = 0;
     //if nothing in array, return 0
-    if (student_array.length > 0)
-    {
+    if (student_array.length > 0) {
         var scores = 0;
 
-        for (var i = 0; i < student_array.length; i++)
-        {
+        for (var i = 0; i < student_array.length; i++) {
             //if valid entry, add to total
-            if (student_array[i].deleted == false)
-            {
+            if (student_array[i].deleted == false) {
                 scores += Number(student_array[i].grade);
             }
             //if not, skip and add to deleted entries count
-            else
-            {
+            else {
                 deletedEntries++;
             }
         }
         //if more than 1 valid entry, calculate average
-        if (student_array.length > deletedEntries)
-        {
+        if (student_array.length > deletedEntries) {
             return (scores / (student_array.length - deletedEntries));
         }
     }
@@ -185,7 +186,7 @@ function updateStudentList() {
 
     for (student in student_array) {//loop through student_array
         //if entry deleted, skip to next
-        if(student_array[student].deleted){
+        if (student_array[student].deleted) {
             continue;
         }
         //take name and course
@@ -230,25 +231,30 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     var existingRows = $('tbody tr').length;//stores number of rows currently existing
     var studentRow = $('<tr>');//studentRow is now a table row
     //var studentNameTD = $('<td>').text(studentObj.name);
-    var studentNameTD = $('<td>',{
+    var studentNameTD = $('<td>', {
         text: studentObj.name
     });
-    var studentCourseTD = $('<td>',{
+    var studentCourseTD = $('<td>', {
         text: studentObj.course
-        });
-    var studentGradeTD = $('<td>',{
+    });
+    var studentGradeTD = $('<td>', {
         text: studentObj.grade
     });
     var studentButtonTD = $('<td>');
-    var delete_button = $('<button>',{
+    var delete_button = $('<button>', {
         type: 'button',
         class: 'btn btn-danger',
         text: 'Delete'
     });
-    delete_button.click(function(){
+    studentObj.element = studentRow;
+    delete_button.click(function () {
+
         removeStudent(studentObj);
+
         $(this).parent().parent().remove();
+        student_array.splice(newIndex, 1);
         updateData();
+
     });
     studentButtonTD.append(delete_button);
     studentRow.append(studentNameTD, studentCourseTD, studentGradeTD, studentButtonTD);
@@ -264,27 +270,75 @@ function reset() {
     cancelClicked();
 }
 
-
-/*var classList = {};
-
-function courseEntry(a){
-    var charTyped = [];
-
-    $('#course').keyup(function(event){
-        $('#course').css('background-color','red');
-
-
-
+//add the ability to highlight the lowest and highest grades
+function gradesHighLow() {
+    var lowGrade = student_array[0].grade;
+    var highGrade = 0;
+    var newLow = student_array[0];
+    var newHigh = student_array[0];
+    for (var i = 0; i < student_array.length; i++) {
+        $(student_array[i].element).removeClass("alert-danger alert-success");
+        var grade = parseInt(student_array[i].grade);
+        if (grade < lowGrade) {
+            lowGrade = grade;
+            newLow = student_array[i];
+        }
+        else if (grade > highGrade) {
+            highGrade = grade;
+            newHigh = student_array[i];
+        }
     }
+}
 
-    )
-}*/
 
-/**
- * Listen for the document to load and reset the data to the initial state
- */$(document).ready(function () {
-    updateData();
-    //courseEntry();
-    //reset();
-});
+
+
+    /*var classList = {};
+     >>>>>>> 2be5d3fc6b35e2d43f4a9e0cde0faf112730c629
+
+     function courseEntry(a){
+     var charTyped = [];
+
+     $('#course').keyup(function(event){
+     console.log('key up triggered');
+
+     if (keyUpTimer == null){
+     //set the timer
+     keyUpTimer = setTimeout(auto_complete,1500);//The id of this timer is stored in keyUpTimer so that you know
+     //which timer you are clearing
+     } else{
+
+     //clear the timer
+     clearTimeout(keyUpTimer);
+     //restart the timer
+     keyUpTimer = setTimeout(auto_complete,1500);
+
+     }
+     })
+     }
+     function auto_complete(){
+     console.log('triggering');
+
+     }
+
+     <<<<<<< HEAD
+     $(newLow.element).addClass("alert-danger");
+     $(newHigh.element).addClass("alert-success");
+     console.log("lowest", lowGrade);
+     console.log("highest", highGrade);
+     }
+     =======
+     )
+     }*/
+
+
+    /**
+     * Listen for the document to load and reset the data to the initial state
+     */
+    $(document).ready(function () {
+        updateData();
+        //courseEntry();
+        //reset();
+    });
+
 

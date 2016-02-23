@@ -6,15 +6,16 @@
  * @type {Array}
  */
 
+var student_array =[];
 
-
-var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted:false},
+/*var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted:false},
     {name: 'Bob', course: 'Biology', grade: '65', deleted:false},
     {name: 'Greg', course: 'Calculus', grade: '90', deleted:false},
     {name: 'Mike', course: 'Engineering', grade: '78', deleted:false},
     {name: 'Stephanie', course: 'Finance', grade: '75', deleted:false},
     {name: 'Melanie', course: 'Finance', grade: '86', deleted:false}
-];
+];*/
+
 //var student_array = {
 //    0: {name: 'first', course: 'frist', grade: '0'},
 //    1: {name: 'second', course: 'secnod', grade: '50'},
@@ -39,6 +40,7 @@ function addClicked() {
     addStudent();//add student object to student_array
     updateData();
     clearAddStudentForm();
+    gradesHighLow();
 }
 
 /**
@@ -59,7 +61,9 @@ function addStudent()//called by addClicked
     //make new student object
     var new_student = {
         name: $('#' + inputIds[0]).val(),//Making a new object with values from display input
-        course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val(), deleted:false
+        course: $('#' + inputIds[1]).val(),
+        grade: $('#' + inputIds[2]).val(),
+        deleted:false
     };
     //assume not already present
     var matchNotFound = true;
@@ -217,7 +221,9 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
         class: 'btn btn-danger',
         text: 'Delete'
     });
+    studentObj.element = studentRow;
     delete_button.click(function(){
+        var newIndex = student_array.indexOf(studentObj);
         console.log('i was clicked',studentRow,studentObj);
         //var the_row = student_array.indexOf(studentObj);
         console.log('I am in row: ',existingRows);
@@ -225,7 +231,9 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
         //in the index
         student_array[student_array.indexOf(studentObj)].deleted=true;///Ask Nick why!
         $(this).parent().parent().remove();
+        student_array.splice(newIndex, 1);
         updateData();
+        gradesHighLow();
         //removeStudent()
     });
     studentButtonTD.append(delete_button);
@@ -242,27 +250,40 @@ function reset() {
     cancelClicked();
 }
 
+//add the ability to highlight the lowest and highest grades
+function gradesHighLow() {
+    var lowGrade = student_array[0].grade;
+    var highGrade = 0;
+    var newLow = student_array[0];
+    var newHigh = student_array[0];
+    for (var i = 0; i < student_array.length; i++) {
+        $(student_array[i].element).removeClass("alert-danger alert-success");
+        var grade = parseInt(student_array[i].grade);
+        if (grade < lowGrade) {
+            lowGrade = grade;
+            newLow = student_array[i];
+        }
+        else if (grade > highGrade) {
+            highGrade = grade;
+            newHigh = student_array[i];
+        }
+    }
+
+    $(newLow.element).addClass("alert-danger");
+    $(newHigh.element).addClass("alert-success");
+    console.log("lowest", lowGrade);
+    console.log("highest", highGrade);
+}
 
 var classList = {};
 
-function courseEntry(a){
-    var charTyped = [];
 
-    $('#course').keyup(function(event){
-        $('#course').css('background-color','red');
-
-
-
-    }
-
-    )
-}
 
 /**
  * Listen for the document to load and reset the data to the initial state
- */$(document).ready(function () {
+ */
+$(document).ready(function () {
     updateData();
-    courseEntry();
-    //reset();
+    gradesHighLow();
+     //reset();
 });
-

@@ -15,13 +15,9 @@ var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted: f
     {name: 'Stephanie', course: 'Finance', grade: '75', deleted: false},
     {name: 'Melanie', course: 'Finance', grade: '86', deleted: false}
 ];
-//var student_array = {
-//    0: {name: 'first', course: 'frist', grade: '0'},
-//    1: {name: 'second', course: 'secnod', grade: '50'},
-//    2: {name: 'third', course: 'thrid', grade: '100'},
-//    3: {name: '4third', course: 'thrid', grade: '100'},
-//    4: {name: '5third', course: 'thrid', grade: '100'}
-//}
+
+var responseObj;
+
 /**
  * inputIds - id's of the elements that are used to add students
  * @type {string[]}
@@ -56,7 +52,6 @@ function cancelClicked() {
  * loadClicked - Event Handler when user clicks the load button, should load data from server
  */
 function loadClicked() {
-
     $.ajax({
         dataType:'json',
         url: 'http://s-apis.learningfuze.com/sgt/get',
@@ -66,6 +61,7 @@ function loadClicked() {
         },
         success: function(response) {
             console.log(response);
+            responseObj = response;
         }
     });
 
@@ -102,7 +98,10 @@ function addStudent()//called by addClicked
     if (matchNotFound) {
         student_array.push(new_student);
     }
-    return;
+    for (var i=0; i<=responseObj.data.length; i++){
+        student_array.push(responseObj.data[i]);
+        console.log(student_array);
+    }
 }
 
 /*function addCourseName(course){
@@ -280,14 +279,6 @@ function gradesHighLow() {
 }
 
 
-function loadClicked(){
-
-
-
-
-
-
-}
 
 
     /*var classList = {};
@@ -334,16 +325,8 @@ function loadClicked(){
      */
     $(document).ready(function () {
         updateData();
-
         //courseEntry();
         //reset();
-
-
-        $('#load').click(function () {
-            console.log('click initiated');
-
-            });
-        });
     });
 
 

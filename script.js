@@ -89,7 +89,7 @@ function addStudent(new_student)//called by addClicked
     else
     {
         //just adds property deleted with value false to object, passes on
-        new_student.deleted = false;
+        new_student['deleted'] = false;
     }
     //assume not already present
     var matchNotFound = true;

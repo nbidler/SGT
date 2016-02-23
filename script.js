@@ -28,12 +28,16 @@ var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted:fa
  */
 var inputIds = ['studentName', 'course', 'studentGrade'];
 
+//Timer initially set to null for keyup checking.
+var keyUpTimer = null;
+
+var courseList = {};
 /**
  * addClicked - Event Handler when user clicks the add button
  */
 
 
-var courseList = {};//
+//
 function addClicked() {
 
     addStudent();//add student object to student_array
@@ -249,13 +253,24 @@ function courseEntry(a){
     var charTyped = [];
 
     $('#course').keyup(function(event){
-        $('#course').css('background-color','red');
+        console.log('key up triggered');
+        if (keyUpTimer == null){
+            //set the timer
+            keyUpTimer = setTimeout(auto_complete,1500);//The id of this timer is stored in keyUpTimer so that you know
+            //which timer you are clearing
+        } else{
+            //clear the timer
+            clearTimeout(keyUpTimer);
+            //restart the timer
+            keyUpTimer = setTimeout(auto_complete,1500);
 
 
+        }
+    })
+}
 
-    }
-
-    )
+function auto_complete(){
+console.log('triggering');
 }
 
 /**

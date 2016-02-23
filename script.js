@@ -15,7 +15,6 @@ var student_array =[];
     {name: 'Stephanie', course: 'Finance', grade: '75', deleted:false},
     {name: 'Melanie', course: 'Finance', grade: '86', deleted:false}
 ];*/
-
 //var student_array = {
 //    0: {name: 'first', course: 'frist', grade: '0'},
 //    1: {name: 'second', course: 'secnod', grade: '50'},
@@ -269,16 +268,35 @@ function gradesHighLow() {
         }
     }
 
+var classList = {};
+var keyUpTimer = null;
+
+function courseEntry(a){
+    var charTyped = [];
+
+    $('#course').keyup(function(event){
+        console.log('key up triggered');
+        if(keyUpTimer==null){
+            //set the timer
+            keyUpTimer=setTimeout(auto_complete,1500);//The id of this timer is stored in keyUpTimer so that you know which timer is being cleared.
+        }
+        else{
+            //clear the timer
+            clearTimeout(keyUpTimer);
+            //restart the timer
+            keyUpTimer = setTimeout(auto_complete,1500);
+        }
+    })
+}
+function auto_complete(){
+    console.log('triggering');
+}
+
     $(newLow.element).addClass("alert-danger");
     $(newHigh.element).addClass("alert-success");
     console.log("lowest", lowGrade);
     console.log("highest", highGrade);
 }
-
-var classList = {};
-
-
-
 /**
  * Listen for the document to load and reset the data to the initial state
  */

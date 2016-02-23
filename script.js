@@ -53,6 +53,13 @@ function cancelClicked() {
     clearAddStudentForm();
 }
 
+/**
+ * loadClicked - Event Handler when user clicks the load button, should load data from server
+ */
+function loadClicked() {
+    clearAddStudentForm();
+    updateData();
+}
 
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
@@ -86,9 +93,9 @@ function addStudent()//called by addClicked
     return;
 }
 
-function addCourseName(course){
+/*function addCourseName(course){
     courseList[course] =1;
-}
+}*/
 
 /**
  * removeStudent  - removes a student object from global student array
@@ -96,12 +103,10 @@ function addCourseName(course){
  * @param row of button clicked passed as jquery object, i.e. $(this)
  */
 
-//function removeStudent(delButton)
-//{
-//    //store target index of pressed delete button
-//    var targetIndex = delButton.find('button').attr("data-index");
-//    student_array.splice(targetIndex, 1);
-//}
+function removeStudent(studentObj)
+{
+    student_array[student_array.indexOf(studentObj)].deleted=true;
+}
 
 /**
  * clearAddStudentForm - clears out the form values based on inputIds variable
@@ -226,18 +231,13 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     });
     studentObj.element = studentRow;
     delete_button.click(function(){
-        var newIndex = student_array.indexOf(studentObj);
-        console.log('i was clicked',studentRow,studentObj);
-        //var the_row = student_array.indexOf(studentObj);
-        console.log('I am in row: ',existingRows);
-        //delete student_array[existingRows];//Could be used if we want to have one item in the array as undefined
-        //in the index
-        student_array[student_array.indexOf(studentObj)].deleted=true;///Ask Nick why!
+
+        removeStudent(studentObj);
+
         $(this).parent().parent().remove();
         student_array.splice(newIndex, 1);
         updateData();
-        gradesHighLow();
-        //removeStudent()
+
     });
     studentButtonTD.append(delete_button);
     studentRow.append(studentNameTD, studentCourseTD, studentGradeTD, studentButtonTD);
@@ -272,8 +272,9 @@ function gradesHighLow() {
         }
     }
 
-var classList = {};
-var keyUpTimer = null;
+
+/*var classList = {};
+>>>>>>> 2be5d3fc6b35e2d43f4a9e0cde0faf112730c629
 
 function courseEntry(a){
     var charTyped = [];
@@ -300,11 +301,15 @@ function auto_complete(){
 
 }
 
+<<<<<<< HEAD
     $(newLow.element).addClass("alert-danger");
     $(newHigh.element).addClass("alert-success");
     console.log("lowest", lowGrade);
     console.log("highest", highGrade);
 }
+=======
+    )
+}*/
 
 
 
@@ -314,7 +319,10 @@ function auto_complete(){
  */
 $(document).ready(function () {
     updateData();
-    gradesHighLow();
+
+    //courseEntry();
+    //reset();
+});
 
 
     $('button').click(function () {

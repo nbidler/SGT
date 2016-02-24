@@ -7,14 +7,14 @@
  */
 
 var student_array = [];
-
-var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted: false},
-    {name: 'Bob', course: 'Biology', grade: '65', deleted: false},
-    {name: 'Greg', course: 'Calculus', grade: '90', deleted: false},
-    {name: 'Mike', course: 'Engineering', grade: '78', deleted: false},
-    {name: 'Stephanie', course: 'Finance', grade: '75', deleted: false},
-    {name: 'Melanie', course: 'Finance', grade: '86', deleted: false}
-];
+//
+//var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted: false},
+//    {name: 'Bob', course: 'Biology', grade: '65', deleted: false},
+//    {name: 'Greg', course: 'Calculus', grade: '90', deleted: false},
+//    {name: 'Mike', course: 'Engineering', grade: '78', deleted: false},
+//    {name: 'Stephanie', course: 'Finance', grade: '75', deleted: false},
+//    {name: 'Melanie', course: 'Finance', grade: '86', deleted: false}
+//];
 
 //var responseObj;
 
@@ -60,7 +60,7 @@ function loadClicked() {
             api_key: 'L91wptvUmZ'
         },
         success: function(response) {
-            //console.log(response);
+            console.log(response);
             //responseObj = response;
             //console.log(student_array.length);
 
@@ -76,6 +76,9 @@ function loadClicked() {
     });
     clearAddStudentForm();
 }
+
+
+
 
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
@@ -119,6 +122,7 @@ function addStudent(new_student)//called by addClicked
     //if not present, add to array
     if (matchNotFound) {
         student_array.push(new_student);
+        serverAddStudent(new_student);
     }
 }
 
@@ -134,6 +138,8 @@ function addStudent(new_student)//called by addClicked
 
 function removeStudent(studentObj) {
     student_array[student_array.indexOf(studentObj)].deleted = true;
+    console.log(studentObj.id);
+    serverDeleteStudent(studentObj.id);
 }
 
 /**
@@ -339,8 +345,49 @@ function gradesHighLow() {
      */
     $(document).ready(function () {
         updateData();
+        loadClicked();
         //courseEntry();
         //reset();
     });
 
+//
+function serverAddStudent(student) {
+    $.ajax({
+        dataType:'json',
+        url: 'http://s-apis.learningfuze.com/sgt/create',
+        method: 'post',
+        data: {
+            api_key: 'L91wptvUmZ',
+            name: student.name,
+            course: student.course,
+            grade: student.grade
+        },
+        success: function(response, new_id) {
+            console.log(response, new_id);
+            student.id = new_id;
+        },
+        error:function(errors){
+            console.log(errors);
+        }
+    });
+    }
 
+function serverDeleteStudent(num) {
+    $.ajax({
+        dataType:'json',
+        url: 'http://s-apis.learningfuze.com/sgt/delete',
+        method: 'post',
+        data: {
+            api_key: 'L91wptvUmZ',
+            student_id: num
+        },
+        success: function(response) {
+            console.log(response);
+        },
+        error:function(errors){
+            console.log(errors);
+        }
+    });
+}
+//    clearAddStudentForm();
+//}

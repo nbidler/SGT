@@ -404,10 +404,11 @@ function serverAddStudent(student) {
         success: function(response) {
             console.log(response);
             student.id = response.new_id;
+            errorModal(response.errors);
         },
         error:function(errors){
             console.log(errors);
-            errorModal(errors);
+            errorModal(response.errors);
         }
     });
     }
@@ -429,13 +430,13 @@ function forceFail(failtype) {
             }
             else if(response.success == false){
                 console.log("a fail ", response);
-                errorModal(response);
+                errorModal(response.error);
             }
             loading.removeClass("active");
         },
         error:function(error){
             console.log("a error ", error);
-            errorModal(error);
+            errorModal([error.statusText]);
             loading.removeClass("active");
         }
     });
@@ -457,21 +458,21 @@ function serverDeleteStudent(num) {
         },
         error:function(errors){
             console.log(errors);
-            errorModal(errors);
+            errorModal(response.errors);
         }
 
     });
 }
 
-
 function errorModal(errorMsg){
     //error modal popup here
-    var errorList = '';
+    console.log('error modal called');
+    var errorList = $('<p>');
 
-    for (var i = 0; i< errorMsg.error.length; i++)
+    for (var i = 0; i< errorMsg.length; i++)
     {
-        errorList += errorMsg.error[i] + '\n';
+        $(errorList).append(errorMsg[i]).append('<br>');
     }
-    $('.modal-body').text(errorList);
+    $('.modal-body').html(errorList);
     $('.modal').modal('show');
 }

@@ -37,10 +37,9 @@ var courseList = {};*/
 
 function addClicked() {
 
-    addStudent();//add student object to student_array
+    serverAddStudent();//add student object to student_array
     updateData();
-    clearAddStudentForm();
-    gradesHighLow();
+    //gradesHighLow();
 }
 
 /**
@@ -93,17 +92,17 @@ function addStudent(fromServer, new_student)//called by addClicked
 {
 
     //if not passed an object
-    if (new_student === undefined)
+    if (fromServer === false)
     {
-        fromServer = false;
         //make new student object
         var new_student = {
             name: $('#' + inputIds[0]).val(),//Making a new object with values from display input
             course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val(), deleted:false,
+            id: new_student.new_id
         };
     }
     //if passed an object
-    else
+    else //if (fromServer === true)
     {
         //console.log(new_student);
         //just adds property deleted with value false to object, passes on
@@ -122,13 +121,24 @@ function addStudent(fromServer, new_student)//called by addClicked
             break;
         }
     }
-    //if not present, add to array
+    //if not present in array
     if (matchNotFound) {
         student_array.push(new_student);
+        /*// and if not already from the server
         if(!fromServer) {
-            serverAddStudent(new_student);
+            //try to send to the server
+            if ( serverAddStudent(new_student) ) {
+                //if server does not throw error, add to local array
+                student_array.push(new_student);
+            }
         }
+        else
+        {
+            student_array.push(new_student);
+        }*/
     }
+
+    clearAddStudentForm();
 }
 
 /*function addCourseName(course){
@@ -264,11 +274,7 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     });
     studentObj.element = studentRow;
     delete_button.click(function () {
-
         serverDeleteRequest(studentObj);
-
-
-
     });
     studentButtonTD.append(delete_button);
     studentRow.append(studentNameTD, studentCourseTD, studentGradeTD, studentButtonTD);
@@ -389,29 +395,31 @@ function gradesHighLow() {
         //reset();
     });
 
-//
-function serverAddStudent(student) {
+//tries to push to server
+function serverAddStudent() {
+
     $.ajax({
         dataType:'json',
         url: 'http://s-apis.learningfuze.com/sgt/create',
         method: 'post',
         data: {
             api_key: 'L91wptvUmZ',
-            name: student.name,
-            course: student.course,
-            grade: student.grade
+            name: $('#' + inputIds[0]).val(),
+            course: $('#' + inputIds[1]).val(),
+            grade: $('#' + inputIds[2]).val()
         },
         success: function(response) {
             console.log(response);
             student.id = response.new_id;
             errorModal(response.errors);
+            addStudent(false, response);
         },
         error:function(errors){
             console.log(errors);
             errorModal(response.errors);
         }
     });
-    }
+}
 
 function forceFail(failtype) {
     var loading = $("#add");
@@ -469,7 +477,7 @@ function errorModal(errorMsg){
     console.log('error modal called');
     var errorList = $('<p>');
 
-    for (var i = 0; i< errorMsg.length; i++)
+    for (var i in errorMsg)
     {
         $(errorList).append(errorMsg[i]).append('<br>');
     }

@@ -144,7 +144,7 @@ function addStudent(fromServer, new_student)//called by addClicked
 function removeStudent(studentObj) {
     student_array[student_array.indexOf(studentObj)].deleted = true;
     console.log(studentObj.id);
-    serverDeleteStudent(studentObj.id);
+    //serverDeleteStudent(studentObj.id);
 }
 
 /**
@@ -264,10 +264,10 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     });
     studentObj.element = studentRow;
     delete_button.click(function () {
-        removeStudent(studentObj);
-        serverDeleteRequest(studentObj.id);
-        $(this).parent().parent().remove();
-        updateData();
+
+        serverDeleteRequest(studentObj);
+
+
 
     });
     studentButtonTD.append(delete_button);
@@ -288,17 +288,25 @@ function removeStudent(studentObj) {
 /**
  * serverDeleteRequest - On deleting a student, also request the deletion of the student on the database
  */
-function serverDeleteRequest(targetID) {
+function serverDeleteRequest(student) {
     $.ajax({
         dataType:'json',
         url: 'http://s-apis.learningfuze.com/sgt/delete',
         method: 'post',
         data: {
             api_key: 'L91wptvUmZ',
-            student_id: targetID
+            student_id: student.id
         },
         success: function(response) {
             console.log(response);
+            if(response.success == true)
+            {
+                removeStudent(student);
+                $(student.element).remove();
+                //$(this).parent().parent().remove();
+                updateData();
+            }
+
         }
     });
 }
@@ -405,6 +413,7 @@ function serverAddStudent(student) {
     }
 
 function forceFail(student) {
+    var loading = $("#add");
     $.ajax({
         dataType:'json',
         url: 'http://s-apis.learningfuze.com/sgt/create',
@@ -415,17 +424,15 @@ function forceFail(student) {
         },
 
         success: function(response) {
-            console.log(response);
-            student.id = response.new_id;
-            $("#add").removeClass("active");
+            console.log("a success ", response);
+           loading.removeClass("active");
         },
         error:function(errors){
-            console.log(errors);
-            errorModal(errors);
-            $("#add").removeClass("active");
+            console.log("a fail ", errors);
+            loading.removeClass("active");
         }
     });
-    $("#add").addClass("active");
+    loading.addClass("active");
 
 }
 

@@ -8,13 +8,13 @@
 
 var student_array = [];
 
-var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted: false},
+/*var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted: false},
     {name: 'Bob', course: 'Biology', grade: '65', deleted: false},
     {name: 'Greg', course: 'Calculus', grade: '90', deleted: false},
     {name: 'Mike', course: 'Engineering', grade: '78', deleted: false},
     {name: 'Stephanie', course: 'Finance', grade: '75', deleted: false},
     {name: 'Melanie', course: 'Finance', grade: '86', deleted: false}
-];
+];*/
 
 //var responseObj;
 
@@ -93,7 +93,7 @@ function addStudent(new_student)//called by addClicked
         //make new student object
         var new_student = {
             name: $('#' + inputIds[0]).val(),//Making a new object with values from display input
-            course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val(), deleted:false
+            course: $('#' + inputIds[1]).val(), grade: $('#' + inputIds[2]).val(), deleted:false,
         };
     }
     //if passed an object
@@ -125,16 +125,6 @@ function addStudent(new_student)//called by addClicked
 /*function addCourseName(course){
  courseList[course] =1;
  }*/
-
-/**
- * removeStudent  - removes a student object from global student array
- * based on the data-index of the clicked 'delete' button
- * @param row of button clicked passed as jquery object, i.e. $(this)
- */
-
-function removeStudent(studentObj) {
-    student_array[student_array.indexOf(studentObj)].deleted = true;
-}
 
 /**
  * clearAddStudentForm - clears out the form values based on inputIds variable
@@ -253,7 +243,8 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     });
     studentObj.element = studentRow;
     delete_button.click(function () {
-        removeStudent(studentObj);
+        removeStudent();
+        serverDeleteRequest(studentObj.id);
         $(this).parent().parent().remove();
         updateData();
 
@@ -261,6 +252,34 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     studentButtonTD.append(delete_button);
     studentRow.append(studentNameTD, studentCourseTD, studentGradeTD, studentButtonTD);
     $('tbody').append(studentRow);
+}
+
+/**
+ * removeStudent  - removes a student object from global student array
+ * based on the data-index of the clicked 'delete' button
+ * @param row of button clicked passed as jquery object, i.e. $(this)
+ */
+
+function removeStudent(studentObj) {
+    student_array[student_array.indexOf(studentObj)].deleted = true;
+}
+
+/**
+ * serverDeleteRequest - On deleting a student, also request the deletion of the student on the database
+ */
+function serverDeleteRequest(targetID) {
+    $.ajax({
+        dataType:'json',
+        url: 'http://s-apis.learningfuze.com/sgt/delete',
+        method: 'post',
+        data: {
+            api_key: 'L91wptvUmZ',
+            student_id: targetID
+        },
+        success: function(response) {
+            console.log(response);
+        }
+    });
 }
 
 /**
@@ -338,6 +357,7 @@ function gradesHighLow() {
      * Listen for the document to load and reset the data to the initial state
      */
     $(document).ready(function () {
+        loadClicked();
         updateData();
         //courseEntry();
         //reset();

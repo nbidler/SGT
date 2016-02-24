@@ -412,7 +412,7 @@ function serverAddStudent(student) {
     });
     }
 
-function forceFail(student) {
+function forceFail(failtype) {
     var loading = $("#add");
     $.ajax({
         dataType:'json',
@@ -420,15 +420,22 @@ function forceFail(student) {
         method: 'post',
         data: {
             api_key: 'L91wptvUmZ',
-            "force-failure": "timeout"
+            "force-failure": failtype
         },
 
         success: function(response) {
-            console.log("a success ", response);
-           loading.removeClass("active");
+            if(response.success == true){
+                console.log("a success ", response);
+            }
+            else if(response.success == false){
+                console.log("a fail ", response);
+                errorModal(response);
+            }
+            loading.removeClass("active");
         },
-        error:function(errors){
-            console.log("a fail ", errors);
+        error:function(error){
+            console.log("a error ", error);
+            errorModal(error);
             loading.removeClass("active");
         }
     });
@@ -461,9 +468,9 @@ function errorModal(errorMsg){
     //error modal popup here
     var errorList = '';
 
-    for (var i = 0; i< errorMsg.errors.length; i++)
+    for (var i = 0; i< errorMsg.error.length; i++)
     {
-        errorList += errorMsg.errors[i] + '\n';
+        errorList += errorMsg.error[i] + '\n';
     }
     $('.modal-body').text(errorList);
     $('.modal').modal('show');

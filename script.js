@@ -411,8 +411,9 @@ function serverAddStudent() {
         success: function(response) {
             console.log(response);
             student.id = response.new_id;
-            errorModal(response.errors);
-            addStudent(false, response);
+            if (response.success){
+                addStudent(false, response);
+            }
         },
         error:function(errors){
             console.log(errors);

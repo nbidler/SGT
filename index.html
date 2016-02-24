@@ -2,6 +2,8 @@
 <html>
 <head>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
+    <link rel="stylesheet" href="style.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -45,7 +47,7 @@
             <input type="text" class="form-control input-sm" name="studentGrade" id="studentGrade"
                    placeholder="Student Grade">
         </div>
-        <button type="button" class="btn btn-success" onclick="addClicked()">Add</button>
+        <button type="button" id="add" class="btn btn-success has-spinner" onclick="addClicked()"> <span class="spinner"><i class="icon-spin icon-refresh"></i></span>Add</button>
         <button type="button" class="btn btn-default" onclick="cancelClicked()">Cancel</button>
         <button type="button" id='load' class="btn btn-info" onclick="loadClicked()">Load from Server</button>
     </div>

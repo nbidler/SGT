@@ -67,7 +67,7 @@ function loadClicked() {
             //parse response for individual student objects to process them
             for (var i = 0; i < response.data.length; i++)
             {
-                addStudent(response.data[i]);
+                addStudent(true, response.data[i]);
                 //console.log(student_array.length);
             }
             //after updating student_array, update display of students
@@ -87,12 +87,13 @@ function loadClicked() {
  * @return undefined
  */
 
-function addStudent(new_student)//called by addClicked
+function addStudent(fromServer, new_student)//called by addClicked
 {
 
     //if not passed an object
     if (new_student === undefined)
     {
+        fromServer = false;
         //make new student object
         var new_student = {
             name: $('#' + inputIds[0]).val(),//Making a new object with values from display input
@@ -122,7 +123,9 @@ function addStudent(new_student)//called by addClicked
     //if not present, add to array
     if (matchNotFound) {
         student_array.push(new_student);
-        serverAddStudent(new_student);
+        if(!fromServer) {
+            serverAddStudent(new_student);
+        }
     }
 }
 
@@ -345,7 +348,7 @@ function gradesHighLow() {
      */
     $(document).ready(function () {
         updateData();
-        loadClicked();
+        //loadClicked();
         //courseEntry();
         //reset();
     });
@@ -362,16 +365,36 @@ function serverAddStudent(student) {
             course: student.course,
             grade: student.grade
         },
-        success: function(response, new_id) {
-            console.log(response, new_id);
-            student.id = new_id;
+        success: function(response) {
+            console.log(response);
+            student.id = response.new_id;
         },
         error:function(errors){
             console.log(errors);
         }
     });
     }
+function serverWipe(){
 
+    for(var i = 100; i < 700; i++) {
+
+        $.ajax({
+            dataType: 'json',
+            url: 'http://s-apis.learningfuze.com/sgt/delete',
+            method: 'post',
+            data: {
+                api_key: 'L91wptvUmZ',
+                student_id: i
+            },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (errors) {
+                console.log(errors);
+            }
+        });
+    }
+}
 function serverDeleteStudent(num) {
     $.ajax({
         dataType:'json',

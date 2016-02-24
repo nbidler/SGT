@@ -399,7 +399,7 @@ function serverAddStudent(student) {
         },
         error:function(errors){
             console.log(errors);
-            //errorModal();
+            errorModal(errors);
         }
     });
     }
@@ -421,7 +421,7 @@ function forceFail(student) {
         },
         error:function(errors){
             console.log(errors);
-            //errorModal();
+            errorModal(errors);
         }
     });
 }
@@ -440,19 +440,20 @@ function serverDeleteStudent(num) {
         },
         error:function(errors){
             console.log(errors);
-            //errorModal();
+            errorModal(errors);
         }
     });
 }
 
-/*
+
 function errorModal(errorMsg){
     //error modal popup here
-    var errorList
+    var errorList = '';
 
-
-    for
-    $('.modal-body').text();
+    for (var i = 0; i< errorMsg.errors.length; i++)
+    {
+        errorList += errorMsg.errors[i] + '\n';
+    }
+    $('.modal-body').text(errorList);
     $('.modal').modal('show');
 }
-*/

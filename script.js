@@ -332,9 +332,6 @@ function gradesHighLow() {
     }
 }
 
-
-
-
     /*var classList = {};
 
 
@@ -402,6 +399,7 @@ function serverAddStudent(student) {
         },
         error:function(errors){
             console.log(errors);
+            errorModal(errors);
         }
     });
     }
@@ -423,6 +421,7 @@ function forceFail(student) {
         },
         error:function(errors){
             console.log(errors);
+            errorModal(errors);
             $("#add").removeClass("active");
         }
     });
@@ -444,9 +443,21 @@ function serverDeleteStudent(num) {
         },
         error:function(errors){
             console.log(errors);
+            errorModal(errors);
         }
 
     });
 }
-//    clearAddStudentForm();
-//}
+
+
+function errorModal(errorMsg){
+    //error modal popup here
+    var errorList = '';
+
+    for (var i = 0; i< errorMsg.errors.length; i++)
+    {
+        errorList += errorMsg.errors[i] + '\n';
+    }
+    $('.modal-body').text(errorList);
+    $('.modal').modal('show');
+}

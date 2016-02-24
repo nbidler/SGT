@@ -8,6 +8,7 @@
 
 var student_array = [];
 
+
 /*var student_array = [{name: 'Jim', course: 'Accounting', grade: '50', deleted: false},
     {name: 'Bob', course: 'Biology', grade: '65', deleted: false},
     {name: 'Greg', course: 'Calculus', grade: '90', deleted: false},
@@ -15,6 +16,7 @@ var student_array = [];
     {name: 'Stephanie', course: 'Finance', grade: '75', deleted: false},
     {name: 'Melanie', course: 'Finance', grade: '86', deleted: false}
 ];*/
+
 
 //var responseObj;
 
@@ -60,14 +62,14 @@ function loadClicked() {
             api_key: 'L91wptvUmZ'
         },
         success: function(response) {
-            //console.log(response);
+            console.log(response);
             //responseObj = response;
             //console.log(student_array.length);
 
             //parse response for individual student objects to process them
             for (var i = 0; i < response.data.length; i++)
             {
-                addStudent(response.data[i]);
+                addStudent(true, response.data[i]);
                 //console.log(student_array.length);
             }
             //after updating student_array, update display of students
@@ -77,6 +79,9 @@ function loadClicked() {
     clearAddStudentForm();
 }
 
+
+
+
 /**
  * addStudent - creates a student objects based on input fields in the form and adds the object to global student array
  * @param - OPTIONAL - passes student object to function, uses that instead of input from fields
@@ -84,12 +89,13 @@ function loadClicked() {
  * @return undefined
  */
 
-function addStudent(new_student)//called by addClicked
+function addStudent(fromServer, new_student)//called by addClicked
 {
 
     //if not passed an object
     if (new_student === undefined)
     {
+        fromServer = false;
         //make new student object
         var new_student = {
             name: $('#' + inputIds[0]).val(),//Making a new object with values from display input
@@ -119,12 +125,27 @@ function addStudent(new_student)//called by addClicked
     //if not present, add to array
     if (matchNotFound) {
         student_array.push(new_student);
+        if(!fromServer) {
+            serverAddStudent(new_student);
+        }
     }
 }
 
 /*function addCourseName(course){
  courseList[course] =1;
  }*/
+
+/**
+ * removeStudent  - removes a student object from global student array
+ * based on the data-index of the clicked 'delete' button
+ * @param row of button clicked passed as jquery object, i.e. $(this)
+ */
+
+function removeStudent(studentObj) {
+    student_array[student_array.indexOf(studentObj)].deleted = true;
+    console.log(studentObj.id);
+    serverDeleteStudent(studentObj.id);
+}
 
 /**
  * clearAddStudentForm - clears out the form values based on inputIds variable
@@ -315,7 +336,7 @@ function gradesHighLow() {
 
 
     /*var classList = {};
-     >>>>>>> 2be5d3fc6b35e2d43f4a9e0cde0faf112730c629
+
 
      function courseEntry(a){
      var charTyped = [];
@@ -342,7 +363,6 @@ function gradesHighLow() {
 
      }
 
-     <<<<<<< HEAD
      $(newLow.element).addClass("alert-danger");
      $(newHigh.element).addClass("alert-success");
      console.log("lowest", lowGrade);
@@ -359,8 +379,69 @@ function gradesHighLow() {
     $(document).ready(function () {
         loadClicked();
         updateData();
+        //loadClicked();
         //courseEntry();
         //reset();
     });
 
+//
+function serverAddStudent(student) {
+    $.ajax({
+        dataType:'json',
+        url: 'http://s-apis.learningfuze.com/sgt/create',
+        method: 'post',
+        data: {
+            api_key: 'L91wptvUmZ',
+            name: student.name,
+            course: student.course,
+            grade: student.grade
+        },
+        success: function(response) {
+            console.log(response);
+            student.id = response.new_id;
+        },
+        error:function(errors){
+            console.log(errors);
+        }
+    });
+    }
+function serverWipe(){
 
+    for(var i = 100; i < 700; i++) {
+
+        $.ajax({
+            dataType: 'json',
+            url: 'http://s-apis.learningfuze.com/sgt/delete',
+            method: 'post',
+            data: {
+                api_key: 'L91wptvUmZ',
+                student_id: i
+            },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (errors) {
+                console.log(errors);
+            }
+        });
+    }
+}
+function serverDeleteStudent(num) {
+    $.ajax({
+        dataType:'json',
+        url: 'http://s-apis.learningfuze.com/sgt/delete',
+        method: 'post',
+        data: {
+            api_key: 'L91wptvUmZ',
+            student_id: num
+        },
+        success: function(response) {
+            console.log(response);
+        },
+        error:function(errors){
+            console.log(errors);
+        }
+    });
+}
+//    clearAddStudentForm();
+//}

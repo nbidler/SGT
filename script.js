@@ -413,18 +413,21 @@ function forceFail(student) {
         method: 'post',
         data: {
             api_key: 'L91wptvUmZ',
-            name: student.name,
-            course: student.course,
-            grade: student.grade
+            "force-failure": "timeout"
         },
+
         success: function(response) {
             console.log(response);
             student.id = response.new_id;
+            $("#add").removeClass("active");
         },
         error:function(errors){
             console.log(errors);
+            $("#add").removeClass("active");
         }
     });
+    $("#add").addClass("active");
+
 }
 
 function serverDeleteStudent(num) {
@@ -442,6 +445,7 @@ function serverDeleteStudent(num) {
         error:function(errors){
             console.log(errors);
         }
+
     });
 }
 //    clearAddStudentForm();

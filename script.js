@@ -264,7 +264,7 @@ function addStudentToDom(studentObj)//meant to add one student to the DOM, one o
     });
     studentObj.element = studentRow;
     delete_button.click(function () {
-        removeStudent();
+        removeStudent(studentObj);
         serverDeleteRequest(studentObj.id);
         $(this).parent().parent().remove();
         updateData();
@@ -405,27 +405,28 @@ function serverAddStudent(student) {
         }
     });
     }
-function serverWipe(){
 
-    for(var i = 100; i < 700; i++) {
-
-        $.ajax({
-            dataType: 'json',
-            url: 'http://s-apis.learningfuze.com/sgt/delete',
-            method: 'post',
-            data: {
-                api_key: 'L91wptvUmZ',
-                student_id: i
-            },
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (errors) {
-                console.log(errors);
-            }
-        });
-    }
+function forceFail(student) {
+    $.ajax({
+        dataType:'json',
+        url: 'http://s-apis.learningfuze.com/sgt/create',
+        method: 'post',
+        data: {
+            api_key: 'L91wptvUmZ',
+            name: student.name,
+            course: student.course,
+            grade: student.grade
+        },
+        success: function(response) {
+            console.log(response);
+            student.id = response.new_id;
+        },
+        error:function(errors){
+            console.log(errors);
+        }
+    });
 }
+
 function serverDeleteStudent(num) {
     $.ajax({
         dataType:'json',

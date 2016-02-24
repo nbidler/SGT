@@ -122,11 +122,19 @@ function addStudent(fromServer, new_student)//called by addClicked
             break;
         }
     }
-    //if not present, add to array
+    //if not present in array
     if (matchNotFound) {
-        student_array.push(new_student);
+        // and if not already from the server
         if(!fromServer) {
-            serverAddStudent(new_student);
+            //try to send to the server
+            if (serverAddStudent(new_student).success) {
+                //if server does not throw error, add to local array
+                student_array.push(new_student);
+            }
+        }
+        else
+        {
+            student_array.push(new_student);
         }
     }
 }

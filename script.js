@@ -38,7 +38,7 @@ var courseList = {};*/
 function addClicked() {
 
     serverAddStudent();//add student object to student_array
-    updateData();
+
     //gradesHighLow();
 }
 
@@ -202,6 +202,7 @@ function updateData() {
     var newAvg = +(calculateAverage()).toFixed(2);
     $('.avgGrade').text(newAvg);
     updateStudentList();
+    gradesHighLow();
 }
 
 /**
@@ -328,61 +329,31 @@ function reset() {
 
 //add the ability to highlight the lowest and highest grades
 function gradesHighLow() {
+    //reset display
+    $('.danger').removeClass("danger");
+    $('.success').removeClass("success");
+
     var lowGrade = student_array[0].grade;
-    var highGrade = 0;
-    var newLow = student_array[0];
-    var newHigh = student_array[0];
-    for (var i = 0; i < student_array.length; i++) {
-        $(student_array[i].element).removeClass("alert-danger alert-success");
-        var grade = parseInt(student_array[i].grade);
+    var highGrade = student_array[0].grade;
+    var lowIndex = 0;
+    var highIndex = 0;
+    //var displayLength =
+    for (var i = 1; i < student_array.length; i++) {
+
+        var grade = $('tbody tr:nth-of-type(' + i + ') td:nth-of-type(3)').text();
         if (grade < lowGrade) {
             lowGrade = grade;
-            newLow = student_array[i];
+            lowIndex = i;
         }
         else if (grade > highGrade) {
             highGrade = grade;
-            newHigh = student_array[i];
+            highIndex = i;
         }
     }
+
+    $('tbody tr:nth-of-type(' + lowIndex + ')').addClass("danger");
+    $('tbody tr:nth-of-type(' + highIndex + ')').addClass("success");
 }
-
-    /*var classList = {};
-
-
-     function courseEntry(a){
-     var charTyped = [];
-
-     $('#course').keyup(function(event){
-     console.log('key up triggered');
-
-     if (keyUpTimer == null){
-     //set the timer
-     keyUpTimer = setTimeout(auto_complete,1500);//The id of this timer is stored in keyUpTimer so that you know
-     //which timer you are clearing
-     } else{
-
-     //clear the timer
-     clearTimeout(keyUpTimer);
-     //restart the timer
-     keyUpTimer = setTimeout(auto_complete,1500);
-
-     }
-     })
-     }
-     function auto_complete(){
-     console.log('triggering');
-
-     }
-
-     $(newLow.element).addClass("alert-danger");
-     $(newHigh.element).addClass("alert-success");
-     console.log("lowest", lowGrade);
-     console.log("highest", highGrade);
-     }
-     =======
-     )
-     }*/
-
 
     /**
      * Listen for the document to load and reset the data to the initial state
@@ -413,6 +384,10 @@ function serverAddStudent() {
             student.id = response.new_id;
             if (response.success){
                 addStudent(false, response);
+                updateData();
+            }
+            else{
+                errorModal(response.error);
             }
         },
         error:function(errors){
@@ -464,6 +439,10 @@ function serverDeleteStudent(num) {
         },
         success: function(response) {
             console.log(response);
+            if (!response.success)
+            {
+                errorModal(response.error);
+            }
         },
         error:function(errors){
             console.log(errors);

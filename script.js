@@ -38,7 +38,7 @@ var courseList = {};*/
 function addClicked() {
 
     serverAddStudent();//add student object to student_array
-    updateData();
+
     //gradesHighLow();
 }
 
@@ -384,6 +384,7 @@ function serverAddStudent() {
             student.id = response.new_id;
             if (response.success){
                 addStudent(false, response);
+                updateData();
             }
             else{
                 errorModal(response.error);

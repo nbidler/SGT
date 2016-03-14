@@ -4,15 +4,17 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css">
     <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script src="script.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+    <script src="angular.js"></script>
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
 </head>
-<body>
+<body ng-app="sgtApp" ng-controller="studentCtrl as sc">
 
-<div class="container-fluid col-sm-10 col-sm-offset-1">
+<div class="container-fluid col-sm-10 col-sm-offset-1" >
     <div class="row">
         <!-- only show this element when the isnt on mobile -->
         <h1 class="hidden-xs">Student Grade Table
@@ -46,12 +48,12 @@
             <input type="text" class="form-control input-sm" name="studentGrade" id="studentGrade"
                    placeholder="Student Grade">
         </div>
-        <button type="button" id="add" class="btn btn-success has-spinner" onclick="addClicked()"> <span class="spinner"><i class="icon-spin icon-refresh"></i></span>Add</button>
+        <button type="button" id="add-student-btn" class="btn btn-success has-spinner" ng-click="sc.addStudent()"> <span class="spinner"><i class="icon-spin icon-refresh"></i></span>Add</button>
         <button type="button" class="btn btn-default" onclick="cancelClicked()">Cancel</button>
         <button type="button" id='load' class="btn btn-info" onclick="loadClicked()">Load from Server</button>
     </div>
     <div class="col-xs-12 col-sm-8 student-list-container">
-        <table class="table student-list">
+        <table id="student-table" class="table student-list">
             <thead>
             <tr>
                 <th>Student Name</th>
@@ -60,8 +62,14 @@
                 <th>Operations</th>
             </tr>
             </thead>
-            <tbody>
-
+            <tbody >
+                <tr ng-repeat="student in sc.students" id="{{student.id}}">
+                    <td class="student-name">{{student.name}}</td>
+                    <td class="student-course">{{student.course}}</td>
+                    <td class="student-grade">{{student.grade}}</td>
+                    <td><button class="btn btn-info edit-btn"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                    <td><button ng-click="sc.deleteClicked(student.id)" data-id="{{student.id}}" class="btn btn-danger delete-btn"><span class="glyphicon glyphicon-remove"></span></button></td>
+                </tr>
             </tbody>
         </table>
     </div>

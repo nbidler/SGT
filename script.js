@@ -123,6 +123,10 @@ function addStudent(fromServer, new_student)//called by addClicked
     }
     //if not present in array
     if (matchNotFound) {
+        if(new_student.course in courses){
+            courses.push(new_student.course);
+        }
+
         student_array.push(new_student);
         /*// and if not already from the server
         if(!fromServer) {
@@ -463,4 +467,16 @@ function errorModal(errorMsg){
     }
     $('.modal-body').html(errorList);
     $('.modal').modal('show');
+}
+var timer;
+var courses = [];
+function autoCheck(){
+    clearTimeout(timer);
+    timer = setTimeout(function(){
+        autoFillCourse();
+    }, 500)
+}
+function autoFillCourse(){
+    var a = courses.join(" ").match(/[a-z]*/gm);
+    console.log(a);
 }

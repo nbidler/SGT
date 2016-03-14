@@ -67,25 +67,17 @@
                     <td class="student-name">{{student.name}}</td>
                     <td class="student-course">{{student.course}}</td>
                     <td class="student-grade">{{student.grade}}</td>
-                    <td><button class="btn btn-info edit-btn"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                    <td><button ng-click="sc.editMenu(student.id)" class="btn btn-info edit-btn"><span class="glyphicon glyphicon-pencil"></span></button></td>
                     <td><button ng-click="sc.deleteClicked(student.id)" data-id="{{student.id}}" class="btn btn-danger delete-btn"><span class="glyphicon glyphicon-remove"></span></button></td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+<!--======== Edit Modal ===========-->
+<!-- line modal -->
+<edit-directive></edit-directive>
 
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="gridSystemModalLabel">Error!</h4>
-            </div>
-            <div class="modal-body">
-                Dongers abound!
-            </div>
-        </div>
-    </div>
-</div>
+
 </body>
 </html>

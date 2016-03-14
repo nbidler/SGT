@@ -13,7 +13,6 @@ angular.module("sgtApp",[])
             this.students.push(student);
         };
     })
-
     .controller("studentCtrl", function(studentService){
         var studentScope = this;
         this.students =  studentService.students;
@@ -25,11 +24,11 @@ angular.module("sgtApp",[])
             console.log("The read failed: " + errorObject.code);
     });
     studentService.firebaseRef.on('child_removed', function (snapshot) {
-        /** Remove the element from the DOM */
-        console.log('snapshot.key is: ', snapshot.key());
         var rowId = snapshot.key();
+        studentScope.removeArray(rowId);
         $('#' + rowId).remove();
     });
+
     this.updateDOM = function(students){
         var student = students.val();
         student.id = students.key();
@@ -52,11 +51,47 @@ angular.module("sgtApp",[])
         $('#studentName').val("");
         $('#course').val("");
         $('#studentGrade').val("");
-    }
+    };
 
     this.deleteClicked = function(data){
         var studentFirebaseRef = studentService.firebaseRef.child(data);
         studentFirebaseRef.remove();
+    };
+
+    this.removeArray = function(id){
+        for(var i = 0; i < studentService.students.length; i++){
+            if( id == studentService.students[i].id){
+                studentService.students.splice(i,1);
+            }
+        }
     }
 
-});
+    this.editMenu = function(data){
+        console.log("click", data);
+        $("#edit-modal").modal("show");
+    }
+
+    this.studentEdit = function(studentFirebaseReference) {
+
+        var newName = $('#modal-edit-name').val(),
+            newCourse = $('#modal-edit-course').val(),
+            newGrade = $('#modal-edit-grade').val();
+        console.log('student updated', 'newName: ', newName, 'newCourse: ', newCourse, 'newGrade: ', newGrade);
+        // using the correct method, send the new student values to firebase to be updated
+        studentFirebaseReference.update({
+            name: newName,
+            course: newCourse,
+            grade: newGrade
+        })
+    }
+
+})
+
+.directive("editDirective", function(){
+    return{
+        restrict: "E",
+        templateUrl: "edit.html",
+        scope: true
+
+    }
+})

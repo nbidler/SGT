@@ -1,0 +1,24 @@
+<div  class="col-xs-12 col-sm-8 student-list-container">
+    <table id="student-table" class="table student-list">
+        <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>Student Course</th>
+            <th>Student Grade</th>
+            <th>Operations</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--<button ng-click="io.getData()">Get Students</button>-->
+        <!--<button ng-click="io.addStudent()">Add Students</button>-->
+        <p ng-bind="tc.test"></p>
+        <tr ng-repeat="student in messages" id="{{student.id}}">
+            <td class="student-name">{{student.name}}</td>
+            <td class="student-course">{{student.course}}</td>
+            <td class="student-grade">{{student.grade}}</td>
+            <td><button ng-click="tc.editMenu(student.id)" class="btn btn-info edit-btn"><span class="glyphicon glyphicon-pencil"></span></button></td>
+            <td><button ng-click="tc.deleteClicked(student.id, $index)" data-id="{{student.id}}" class="btn btn-danger delete-btn"><span class="glyphicon glyphicon-remove"></span></button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

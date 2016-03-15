@@ -1,7 +1,12 @@
 /**
  * Created by Mad Martigan on 3/14/2016.
  */
-angular.module("sgtApp", [])
+angular.module("sgtApp", ["firebase"])
+
+    .controller("travisFireCtrl",["$scope", "$firebaseArray", function($scope, $firebaseArray){
+        var ref = new Firebase("https://popping-heat-5383.firebaseio.com/students");
+        $scope.messages = $firebaseArray(ref);
+    }])
 
     .service("firebaseService", function () {
 
@@ -165,6 +170,15 @@ angular.module("sgtApp", [])
             scope: true,
             controller: "ioController",
             controllerAs: "ic"
+        }
+    })
+    .directive("travisDirective", function () {
+        return {
+            restrict: "E",
+            templateUrl: "travisTable.html",
+            scope: true,
+            controller: "travisFireCtrl",
+            controllerAs: "tc"
         }
     })
     .provider('fuzeApi', function () {

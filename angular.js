@@ -24,9 +24,9 @@ angular.module("sgtApp",[])
             console.log("The read failed: " + errorObject.code);
     });
     studentService.firebaseRef.on('child_removed', function (snapshot) {
-        var rowId = snapshot.key();
-        studentScope.removeArray(rowId);
-        $('#' + rowId).remove();
+        //var rowId = snapshot.key();
+        //
+        //$('#' + rowId).remove();
     });
 
     this.updateDOM = function(students){
@@ -53,23 +53,29 @@ angular.module("sgtApp",[])
         $('#studentGrade').val("");
     };
 
-    this.deleteClicked = function(data){
+    this.deleteClicked = function(data, rowId){
+        studentService.students.splice(rowId,1);
         var studentFirebaseRef = studentService.firebaseRef.child(data);
         studentFirebaseRef.remove();
     };
 
-    this.removeArray = function(id){
-        for(var i = 0; i < studentService.students.length; i++){
-            if( id == studentService.students[i].id){
-                studentService.students.splice(i,1);
-            }
-        }
-    }
 
     this.editMenu = function(data){
-        console.log("click", data);
-        $("#edit-modal").modal("show");
-    }
+        var studentFirebaseRef = studentService.firebaseRef.child(data);
+
+        studentFirebaseRef.once('value', function (snapshot) {
+            $('#modal-edit-name').val(snapshot.val().name);
+            $('#modal-edit-course').val(snapshot.val().course);
+            $('#modal-edit-grade').val(snapshot.val().grade);
+
+            $('#student-id').val(data);
+
+            console.log("$('#student-id').val(student_id) : ", $('#student-id').val(data));
+
+            $("#edit-modal").modal("show");
+        });
+
+    };
 
     this.studentEdit = function(studentFirebaseReference) {
 
@@ -84,7 +90,6 @@ angular.module("sgtApp",[])
             grade: newGrade
         })
     }
-
 })
 
 .directive("editDirective", function(){

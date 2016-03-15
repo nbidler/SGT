@@ -9,14 +9,14 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
-    <script src="angular.js"></script>
+
     <meta name="viewport" content="initial-scale=1, user-scalable=no">
 </head>
-<body ng-app="sgtApp" ng-controller="studentCtrl as sc">
+<body ng-app="sgtApp">
 
-<div class="container-fluid col-sm-10 col-sm-offset-1" >
+<div class="container-fluid col-sm-10 col-sm-offset-1"  >
     <div class="row">
-        <!-- only show this element when the isnt on mobile -->
+        <!-- only show this element when the isnt on mobile ng-controller="studentCtrl as sc  "-->
         <h1 class="hidden-xs">Student Grade Table
             <small class="pull-right">Grade Average : <span class="label label-default avgGrade">0</span></small>
         </h1>
@@ -25,7 +25,7 @@
             <small>Grade Average : <span class="label label-default avgGrade">0</span></small>
         </h3>
     </div>
-    <div class="pull-right col-xs-12 col-sm-4 student-add-form">
+    <div class="pull-right col-xs-12 col-sm-4 student-add-form" ng-controller="studentCtrl as sc">
         <h4>Add Student</h4>
         <div class="form-group input-group input-group-sm">
             <span class="input-group-addon">
@@ -50,34 +50,18 @@
         </div>
         <button type="button" id="add-student-btn" class="btn btn-success has-spinner" ng-click="sc.addStudent()"> <span class="spinner"><i class="icon-spin icon-refresh"></i></span>Add</button>
         <button type="button" class="btn btn-default" ng-click="sc.clearInputs()">Cancel</button>
-        <button type="button" id='load' class="btn btn-info" onclick="loadClicked()">Load from Server</button>
+        <button type="button" id='load' class="btn btn-info" ng-click="sc.loadClicked()">Load from Server</button>
+
     </div>
-    <div class="col-xs-12 col-sm-8 student-list-container">
-        <table id="student-table" class="table student-list">
-            <thead>
-            <tr>
-                <th>Student Name</th>
-                <th>Student Course</th>
-                <th>Student Grade</th>
-                <th>Operations</th>
-            </tr>
-            </thead>
-            <tbody >
-                <tr ng-repeat="student in sc.students" id="{{student.id}}">
-                    <td class="student-name">{{student.name}}</td>
-                    <td class="student-course">{{student.course}}</td>
-                    <td class="student-grade">{{student.grade}}</td>
-                    <td><button ng-click="sc.editMenu(student.id)" class="btn btn-info edit-btn"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                    <td><button ng-click="sc.deleteClicked(student.id, $index)" data-id="{{student.id}}" class="btn btn-danger delete-btn"><span class="glyphicon glyphicon-remove"></span></button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <!--<firebase-directive></firebase-directive>-->
+    <fuze-api-directive></fuze-api-directive>
 </div>
 <!--======== Edit Modal ===========-->
 <!-- line modal -->
 <edit-directive></edit-directive>
 
 
+
 </body>
+<script src="angular.js"></script>
 </html>

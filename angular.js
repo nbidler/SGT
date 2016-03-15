@@ -4,8 +4,8 @@
 angular.module("sgtApp",[])
 
     .service("studentService", function(){
-        this.submitBtn = $('#add-student-btn');
-        this.sgtTableElement = $('#student-table');
+        //this.submitBtn = $('#add-student-btn');
+        //this.sgtTableElement = $('#student-table');
         this.firebaseRef = new Firebase("https://popping-heat-5383.firebaseio.com/students");
         this.students = [];
         this.test = "test valid";
@@ -19,21 +19,49 @@ angular.module("sgtApp",[])
         this.test = studentService.test;
 
     studentService.firebaseRef.on("child_added", function (studentSnapShot) {
-            studentScope.updateDOM(studentSnapShot);
+            studentScope.addStudentToArray(studentSnapShot);
         }, function (errorObject) {
             console.log("The read failed: " + errorObject.code);
     });
+
     studentService.firebaseRef.on('child_removed', function (snapshot) {
-        //var rowId = snapshot.key();
-        //
-        //$('#' + rowId).remove();
+
     });
 
-    this.updateDOM = function(students){
+    studentService.firebaseRef.on("child_changed", function (studentSnapShot) {
+       studentScope.updateDOM(studentSnapShot);
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });
+    this.addStudentToArray = function(students){
         var student = students.val();
         student.id = students.key();
         studentService.updateList(student);
     };
+    this.updateDOM = function(data){
+        //console.log(students);
+        //var student = students.val();
+        //student.id = students.key();
+        //studentService.updateList(student);
+        studentService.students = [];
+        studentService.firebaseRef.on("value", function(snapshot) {
+            var studentData = snapshot.val();
+
+            for (var i in  studentData){
+                console.log(i);
+
+                studentData[i].id = i.key();
+                studentService.updateList(studentData[i]);
+            }
+            studentScope.students = studentService.students;
+
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+
+        console.log(studentScope.students);
+    };
+
     this.addStudent = function(){
         var studentName = $('#studentName').val(),
             studentCourse = $('#course').val(),
@@ -47,6 +75,7 @@ angular.module("sgtApp",[])
 
         studentScope.clearInputs();
     };
+
     this.clearInputs = function(){
         $('#studentName').val("");
         $('#course').val("");
@@ -59,8 +88,8 @@ angular.module("sgtApp",[])
         studentFirebaseRef.remove();
     };
 
-
     this.editMenu = function(data){
+        console.log(data);
         var studentFirebaseRef = studentService.firebaseRef.child(data);
 
         studentFirebaseRef.once('value', function (snapshot) {
@@ -77,26 +106,28 @@ angular.module("sgtApp",[])
 
     };
 
-    this.studentEdit = function(studentFirebaseReference) {
-
+    this.studentEdit = function() {
+        console.log("changed!");
         var newName = $('#modal-edit-name').val(),
             newCourse = $('#modal-edit-course').val(),
-            newGrade = $('#modal-edit-grade').val();
+            newGrade = $('#modal-edit-grade').val(),
+            studentFirebaseRef =  studentService.firebaseRef.child($('#edit-modal').find('#student-id').val());
         console.log('student updated', 'newName: ', newName, 'newCourse: ', newCourse, 'newGrade: ', newGrade);
         // using the correct method, send the new student values to firebase to be updated
-        studentFirebaseReference.update({
+        studentFirebaseRef.update({
             name: newName,
             course: newCourse,
             grade: newGrade
-        })
+        });
+        $("#edit-modal").modal("hide");
     }
-})
+    })
 
-.directive("editDirective", function(){
-    return{
-        restrict: "E",
-        templateUrl: "edit.html",
-        scope: true
+    .directive("editDirective", function(){
+        return{
+            restrict: "E",
+            templateUrl: "edit.html",
+            scope: true
 
-    }
-})
+        }
+    });

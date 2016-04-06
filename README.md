@@ -36,7 +36,7 @@ with a visual of those objects stored.
     - Apply bootstrap <a href="http://getbootstrap.com/css/#tables" target="_blank">table styling</a>
     - Apply look using boostrap only based on the designs <a href="https://github.com/ej020586/SGT/tree/v.1#design">below</a>. <b>Please note that no additional style sheets have been added</b>
 - JS Functionality
-    - Build out all functions & variables based on jsDoc (<a href="https://en.wikipedia.org/wiki/JSDoc" target="_blank">What is this?</a>) comments inside the script.js file
+    - Build out all functions & variables based on jsDoc (<a href="https://en.wikipedia.org/wiki/JSDoc" target="_blank">What is this?</a>) comments inside the oldscript.js file
     - Form
         - On click of add button
             - call appropriate function in on click attribute
